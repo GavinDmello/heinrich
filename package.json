@@ -1,0 +1,23 @@
+{
+  "name": "heinrich",
+  "version": "0.0.1",
+  "description": "A lightweight load-balancer written in Node.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GavinDmello/heinrich.git"
+  },
+  "author": "GavinDmello",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GavinDmello/heinrich/issues"
+  },
+  "homepage": "https://github.com/GavinDmello/heinrich#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "tcp-ping": "^0.1.1"
+  }
+}
