@@ -1,4 +1,5 @@
-var servers = require('./config').servers
+var servers = require('./config.json').servers
+var pingInterval = require('./config').pingInterval
 var async = require('async')
 var EE = require('events').EventEmitter
 var serverTransmitter = new EE()
@@ -16,10 +17,9 @@ health.prototype.ping = function() {
         	result = result.filter(Boolean)
             serverTransmitter.emit('health', result)
         }
-        process.nextTick(function(){
-        	that.ping()
-        })
-
+        setTimeout( function() {
+            that.ping()
+        }, pingInterval)
     })
 
     function getServerHealth(server, callback) {
