@@ -69,3 +69,15 @@ network.prototype.postRequest = function(hostInfo, request, done) {
         });
     }
 }
+
+network.prototype.sendRequest = function(hostInfo, request, cb) {
+    if (request.method === 'GET') {
+        this.getRequest(hostInfo, request, function(response) {
+            cb(response)
+        })
+    } else {
+        this.postRequest(hostInfo, request, function(response) {
+            cb(response)
+        })
+    }
+}
