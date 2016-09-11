@@ -9,6 +9,7 @@ A lightweight load-balance written in Node.js
 - [x] round robin routing
 - [x] least connections routing
 - [x] server health monitoring using tcp pings
+- [x] https support
 - [ ] request queuing
 - [ ] sticky connections
 - [ ] explicit blacklist
