@@ -9,7 +9,7 @@ var servers = []
 var roundRobinIndex = 0
 
 serverListener.on('health', function(serverhealth) {
-    console.log('serverhealth', serverhealth)
+    // console.log('serverhealth', serverhealth)
     servers = serverhealth
 })
 
@@ -24,6 +24,12 @@ router.hitServers = function(request, cb) {
 
         case 2:
             strategies.roundRobinRouter.hitRoundRobin(request, function(response) {
+                cb(response)
+            })
+            break
+
+        case 3:
+            strategies.leastConnectionsRouter.hitLeastConnections(request, function(response) {
                 cb(response)
             })
             break
