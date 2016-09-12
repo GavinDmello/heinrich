@@ -2,8 +2,9 @@
 	"port" : 8080,
 	"pingInterval" : 1000,
 	"servers" : [{ "host": "127.0.0.1", "port": 8090 }, { "host": "127.0.0.1", "port": 9000 }],
-	"mode" : 2,
-    "https" : true,
+	"mode" : 1,
+    "https" : false,
+    "multiCore" : true,
     "key" : "",
     "cert": ""
 }

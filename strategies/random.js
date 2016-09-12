@@ -9,7 +9,6 @@ random.prototype.hitRandom = function hitRandom(request, cb) {
     var hostInfo
     this.servers = request.servers
     var serverIndex = this.chooseRandomServer(0, this.servers.length - 1)
-    console.log(serverIndex, this.servers)
     if (serverIndex === 0 || serverIndex) {
         hostInfo = { host: this.servers[serverIndex].host, port: this.servers[serverIndex].port }
     } else {
