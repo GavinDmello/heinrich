@@ -13,7 +13,7 @@ A lightweight load-balance written in Node.js
 - [x] multi core usage
 - [ ] request queuing
 - [ ] sticky connections
-- [ ] explicit blacklist
+- [x] explicit blacklist
 - [ ] slowloris counter
 - [ ] DOS counter
 - [ ] DDOS counter

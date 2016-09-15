@@ -33,9 +33,20 @@ function serverInit() {
     health.ping()
 
     function handleAnyRequest(request, response) {
+        var clientIp = request.headers['x-forwarded-for'] ||
+            request.connection.remoteAddress ||
+            request.socket.remoteAddress ||
+            request.connection.socket.remoteAddress
+
+        var clientAddressIndex = config.blackListAddress.indexOf(clientIp)
+        if (clientAddressIndex > -1) {
+            response.writeHead(404)
+            response.end()
+            return
+        }
+
         request.id = cluster.worker.id || undefined
         router.hitServers(request, function(lbResponse) {
-            // console.log(request.connection.remoteAddress)
             if (lbResponse) {
                 response.end(lbResponse)
             } else {

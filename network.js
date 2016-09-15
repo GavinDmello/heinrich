@@ -37,9 +37,9 @@ network.prototype.postRequest = function(hostInfo, request, done) {
         method: 'POST'
     }
     request.pipe(concat(function(data) {
-            var req = http.request(options, callback);
-            req.write(body);
-            req.end();
+            var req = http.request(options, callback)
+            req.write(data)
+            req.end()
 
     }))
     callback = function(response) {

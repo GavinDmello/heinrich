@@ -1,7 +1,10 @@
 var Network = require('../network')
 var network = new Network()
 
-function roundRobin() {}
+function roundRobin() {
+    this.initialIndex = 0
+    this.roundRobinThreshold = 1000
+}
 
 module.exports = roundRobin
 
@@ -10,6 +13,7 @@ roundRobin.prototype.hitRoundRobin = function hitRoundRobin(request, cb) {
 
     if (!this.roundRobinIndex) {
         this.roundRobinIndex = request.id === undefined ? 0 : request.id
+        this.initialIndex = request.id
     }
 
     this.servers = request.servers
@@ -28,6 +32,7 @@ roundRobin.prototype.hitRoundRobin = function hitRoundRobin(request, cb) {
 
 roundRobin.prototype.roundRobinIndexCalculation = function roundRobinIndexCalculation(min, max) {
     if (this.servers.length !== 0) {
+        if (this.roundRobinIndex === this.roundRobinThreshold) this.roundRobinIndex = this.initialIndex
         return ((this.roundRobinIndex++) % (min + max))
     } else {
         return null
