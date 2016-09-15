@@ -18,6 +18,7 @@
   "homepage": "https://github.com/GavinDmello/heinrich#readme",
   "dependencies": {
     "async": "^2.0.1",
+    "concat-stream": "^1.5.2",
     "tcp-ping": "^0.1.1"
   }
 }

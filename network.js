@@ -1,11 +1,13 @@
 var http = require('http')
+var concat = require('concat-stream')
+
 function network() {}
 
 module.exports = network
 
 network.prototype.getRequest = function(hostInfo, request, done) {
 
-	request.headers.host = hostInfo.host+':'+hostInfo.port
+    request.headers.host = hostInfo.host + ':' + hostInfo.port
 
     var options = {
         host: hostInfo.host,
@@ -16,24 +18,17 @@ network.prototype.getRequest = function(hostInfo, request, done) {
     };
 
     callback = function(response) {
-        var str = '';
-
-        response.on('data', function(chunk) {
-            str += chunk;
-        });
-
-        //the whole response has been recieved, so we just print it out here
-        response.on('end', function() {
-            done(str)
-        });
+        response.pipe(concat(function(data) {
+            done(data)
+        }))
     }
 
-    http.request(options, callback).end();
+    var req = http.request(options, callback).end()
 }
 
 
 network.prototype.postRequest = function(hostInfo, request, done) {
-	request.headers.host = hostInfo.host+':'+hostInfo.port
+    request.headers.host = hostInfo.host + ':' + hostInfo.port
 
     var options = {
         host: hostInfo.host,
@@ -44,28 +39,29 @@ network.prototype.postRequest = function(hostInfo, request, done) {
 
     var body = ''
 
-    request.on('data', function(data) {
-        body += data;
-    });
+    request.pipe(concat(function(data) {
+            var req = http.request(options, callback);
+            req.write(body);
+            req.end();
 
-    request.on('end', function() {
-        var req = http.request(options, callback);
+    }))
 
-        req.write(body);
-        req.end();
-    });
+    // request.on('data', function(data) {
+    //     body += data;
+    // });
+
+    // request.on('end', function() {
+    //     var req = http.request(options, callback);
+
+    //     req.write(body);
+    //     req.end();
+    // });
 
 
     callback = function(response) {
-        var str = ''
-
-        response.on('data', function(chunk) {
-            str += chunk;
-        });
-
-        response.on('end', function() {
-            done(str)
-        });
+        response.pipe(concat(function(data) {
+            done(data)
+        }))
     }
 }
 
