@@ -19,7 +19,7 @@ network.prototype.getRequest = function(hostInfo, request, done) {
 
     callback = function(response) {
         response.pipe(concat(function(data) {
-            done(data)
+            done({ data: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
 
@@ -37,14 +37,14 @@ network.prototype.postRequest = function(hostInfo, request, done) {
         method: 'POST'
     }
     request.pipe(concat(function(data) {
-            var req = http.request(options, callback)
-            req.write(data)
-            req.end()
+        var req = http.request(options, callback)
+        req.write(data)
+        req.end()
 
     }))
     callback = function(response) {
         response.pipe(concat(function(data) {
-            done(data)
+            done({ data: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
 }

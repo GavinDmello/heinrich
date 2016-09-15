@@ -47,10 +47,10 @@ function serverInit() {
 
         request.id = cluster.worker.id || undefined
         router.hitServers(request, function(lbResponse) {
+            response.writeHead(lbResponse.statusCode)
             if (lbResponse) {
-                response.end(lbResponse)
+                response.end(lbResponse.body)
             } else {
-                response.writeHead(404)
                 response.end()
             }
 
@@ -60,7 +60,6 @@ function serverInit() {
     if (config.https) {
         var fs = require('fs')
         http = require('https')
-        console.log()
         if (!config.key || !config.cert) {
             console.log('certificated not provided')
             process.exit(0)
