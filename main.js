@@ -1,6 +1,7 @@
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var config = require('./config.json')
+cluster.schedulingPolicy = cluster.SCHED_RR
 
 if (config.multiCore) {
     if (cluster.isMaster) {
@@ -32,7 +33,7 @@ function serverInit() {
     health.ping()
 
     function handleAnyRequest(request, response) {
-        console.log(process.pid)
+        request.id = cluster.worker.id || undefined
         router.hitServers(request, function(lbResponse) {
             // console.log(request.connection.remoteAddress)
             if (lbResponse) {

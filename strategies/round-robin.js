@@ -1,14 +1,17 @@
 var Network = require('../network')
 var network = new Network()
 
-function roundRobin() {
-    this.roundRobinIndex = 0
-}
+function roundRobin() {}
 
 module.exports = roundRobin
 
 roundRobin.prototype.hitRoundRobin = function hitRoundRobin(request, cb) {
     var hostInfo
+
+    if (!this.roundRobinIndex) {
+        this.roundRobinIndex = request.id === undefined ? 0 : request.id
+    }
+
     this.servers = request.servers
     var serverIndex = this.roundRobinIndexCalculation(0, this.servers.length)
     if (serverIndex === 0 || serverIndex) {

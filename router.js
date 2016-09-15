@@ -6,7 +6,6 @@ var network = new Network()
 var strategies = require('./strategies')
 var serverListener = require('./health').eventListener
 var servers = []
-var roundRobinIndex = 0
 
 serverListener.on('health', function(serverhealth) {
     // console.log('serverhealth', serverhealth)
