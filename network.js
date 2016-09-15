@@ -36,28 +36,12 @@ network.prototype.postRequest = function(hostInfo, request, done) {
         path: request.path || '/',
         method: 'POST'
     }
-
-    var body = ''
-
     request.pipe(concat(function(data) {
             var req = http.request(options, callback);
             req.write(body);
             req.end();
 
     }))
-
-    // request.on('data', function(data) {
-    //     body += data;
-    // });
-
-    // request.on('end', function() {
-    //     var req = http.request(options, callback);
-
-    //     req.write(body);
-    //     req.end();
-    // });
-
-
     callback = function(response) {
         response.pipe(concat(function(data) {
             done(data)
