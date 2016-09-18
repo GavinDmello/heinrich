@@ -1,5 +1,5 @@
 var servers = require('./config.json').servers
-var pingInterval = require('./config').pingInterval
+var pingInterval = require('./config').pingInterval || 1000
 var async = require('async')
 var EE = require('events').EventEmitter
 var serverTransmitter = new EE()

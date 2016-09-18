@@ -27,7 +27,7 @@ function serverInit() {
     var router = require('./router')
     var Health = require('./health').health
     var health = new Health()
-    var PORT = config.port;
+    var PORT = config.port || 3001;
     var server
 
     health.ping()
