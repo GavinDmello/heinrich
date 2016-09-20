@@ -33,6 +33,10 @@ function serverInit() {
     health.ping()
 
     function handleAnyRequest(request, response) {
+        if (config.requestTimeout) {
+            request.connection.setTimeout(config.requestTimeout*1000)
+        }
+
         var clientIp = request.headers['x-forwarded-for'] ||
             request.connection.remoteAddress ||
             request.socket.remoteAddress ||

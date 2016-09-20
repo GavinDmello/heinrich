@@ -20,6 +20,8 @@ Example :-
     ],
     "mode" : 1,
     "blackListAddress": ["1.2.3.4"],
+    "blockedUserAgent":[],
+    "requestTimeout": 10,
     "https" : true,
     "multiCore" : true,
     "key" : "/home/keys/key.pem",
@@ -44,8 +46,14 @@ There are three modes supported as of now.
  3.  Least connections routing
 
 
-####    blackListAddress
+#### blackListAddress
 If you figure out an client IP address which was trying a DOS attack. You can explicitly black list the IP address. A list of IP addresses can be provided. Any request emerging from these IP addresses will be rejected.
+
+#### blockedUserAgent
+According a user study, most of pseudo traffic usually comes from a clients having in-appropriate user-agents. The blockUserAgent is list of all the user agents you can block. The user agent should be in string format. The client requesting with these user agents will get 500 response code.
+
+#### requestTimeout
+This is counter against the `slowloris` attack. This could also happen if the clients are slow. Defense against such a situation would be to decide on a timeout value.If the request doesn't complete in the given timeout value, the client connection will be closed. Deciding on an optimum value here would be challenge. If this property is not provided then the load balancer would be susceptible to a possible DOS attack.
 
 #### https
 You can run the load-balancer in https mode by setting https flag equal to true. By default the load-balancer will run in http mode.
@@ -70,7 +78,7 @@ This will have the absolute address of the certificate.
 - [x] https support
 - [x] multi core usage
 - [x] explicit blacklist
+- [x] slowloris counter
 - [ ] request queuing
-- [ ] slowloris counter
 - [ ] DOS counter
 - [ ] DDOS counter
