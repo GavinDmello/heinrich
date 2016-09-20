@@ -29,9 +29,6 @@ leastConnections.prototype.hitLeastConnections = function hitLeastConnections(re
     this.selectLeastActive(request.servers, function(selectedServer) {
         if (selectedServer) {
             hostInfo = { host: selectedServer.host, port: selectedServer.port }
-        } else {
-            cb(null)
-            return
         }
 
         that._serverConnections[selectedServer.minifiedServerString]++
@@ -45,13 +42,8 @@ leastConnections.prototype.hitLeastConnections = function hitLeastConnections(re
 
 leastConnections.prototype.selectLeastActive = function selectLeastActive(onlineServers, cb) {
     var that = this
-
     var min
     var selectedServer = {}
-    if (onlineServers.length === 0) {
-        cb(null)
-        return
-    }
 
     async.each(onlineServers, function(_server, servercallback) {
         var minifiedServerString = _server.host + _server.port.toString()

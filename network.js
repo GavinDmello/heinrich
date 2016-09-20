@@ -19,7 +19,7 @@ network.prototype.getRequest = function(hostInfo, request, done) {
 
     callback = function(response) {
         response.pipe(concat(function(data) {
-            done({ data: data, headers: response.headers, statusCode: response.statusCode })
+            done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
 
@@ -43,8 +43,8 @@ network.prototype.postRequest = function(hostInfo, request, done) {
 
     }))
     callback = function(response) {
-        response.pipe(concat(function(data) {
-            done({ data: data, headers: response.headers, statusCode: response.statusCode })
+        response.pipe(concat(function(data) {s
+            done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
 }

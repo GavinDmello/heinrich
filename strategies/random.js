@@ -11,9 +11,6 @@ random.prototype.hitRandom = function hitRandom(request, cb) {
     var serverIndex = this.chooseRandomServer(0, this.servers.length - 1)
     if (serverIndex === 0 || serverIndex) {
         hostInfo = { host: this.servers[serverIndex].host, port: this.servers[serverIndex].port }
-    } else {
-        cb(null)
-        return
     }
 
     network.sendRequest(hostInfo, request, function(response) {
@@ -22,10 +19,5 @@ random.prototype.hitRandom = function hitRandom(request, cb) {
 }
 
 random.prototype.chooseRandomServer = function chooseRandomServer(min, max) {
-    if (this.servers.length !== 0) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    } else {
-        return null
-    }
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
-

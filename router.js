@@ -14,6 +14,12 @@ serverListener.on('health', function(serverhealth) {
 
 router.hitServers = function(request, cb) {
     request.servers = servers
+
+    if (servers.length === 0) {
+        cb({ statusCode: 404 })
+        return
+    }
+
     switch (config.mode) {
         case 1:
             strategies.randomRouter.hitRandom(request, function(response) {

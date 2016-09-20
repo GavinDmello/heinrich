@@ -39,14 +39,18 @@ function serverInit() {
             request.connection.socket.remoteAddress
 
         var clientAddressIndex = config.blackListAddress.indexOf(clientIp)
-        if (clientAddressIndex > -1) {
-            response.writeHead(404)
+        var userAgent = request.headers['user-agent']
+        var blockedUserAgent = config.blockedUserAgent
+
+        if ((clientAddressIndex > -1) || (blockedUserAgent.indexOf(userAgent) > -1)) {
+            response.writeHead(500)
             response.end()
+            clientAddressIndex = clientIp = blockedUserAgent = userAgent = null
             return
         }
 
         request.id = cluster.worker.id || undefined
-        router.hitServers(request, function(lbResponse) {
+        router.hitServers(request, function getResponse(lbResponse) {
             response.writeHead(lbResponse.statusCode)
             if (lbResponse) {
                 response.end(lbResponse.body)

@@ -20,9 +20,6 @@ roundRobin.prototype.hitRoundRobin = function hitRoundRobin(request, cb) {
     var serverIndex = this.roundRobinIndexCalculation(0, this.servers.length)
     if (serverIndex === 0 || serverIndex) {
         hostInfo = { host: this.servers[serverIndex].host, port: this.servers[serverIndex].port }
-    } else {
-        cb(null)
-        return
     }
 
     network.sendRequest(hostInfo, request, function(response) {
@@ -31,11 +28,6 @@ roundRobin.prototype.hitRoundRobin = function hitRoundRobin(request, cb) {
 }
 
 roundRobin.prototype.roundRobinIndexCalculation = function roundRobinIndexCalculation(min, max) {
-    if (this.servers.length !== 0) {
-        if (this.roundRobinIndex === this.roundRobinThreshold) this.roundRobinIndex = this.initialIndex
-        return ((this.roundRobinIndex++) % (min + max))
-    } else {
-        return null
-    }
+    if (this.roundRobinIndex === this.roundRobinThreshold) this.roundRobinIndex = this.initialIndex
+    return ((this.roundRobinIndex++) % (min + max))
 }
-
