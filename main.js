@@ -1,6 +1,11 @@
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var config = require('./config.json')
+var router = require('./router')
+var Health = require('./health').health
+var health = new Health()
+var PORT = config.port || 3001;
+var server, http
 cluster.schedulingPolicy = cluster.SCHED_RR
 
 if (config.multiCore) {
@@ -14,27 +19,20 @@ if (config.multiCore) {
             cluster.fork();
         });
     } else {
-        serverInit()
+        serverInit({ clusterId: cluster.worker.id })
     }
 } else {
-    serverInit()
+    serverInit({}) // No cluster present so no Id
 }
 
 
 
-function serverInit() {
-    var http
-    var router = require('./router')
-    var Health = require('./health').health
-    var health = new Health()
-    var PORT = config.port || 3001;
-    var server
-
+function serverInit(opts) {
     health.ping()
 
     function handleAnyRequest(request, response) {
         if (config.requestTimeout) {
-            request.connection.setTimeout(config.requestTimeout*1000)
+            request.connection.setTimeout(config.requestTimeout * 1000)
         }
 
         var clientIp = request.headers['x-forwarded-for'] ||
@@ -53,7 +51,7 @@ function serverInit() {
             return
         }
 
-        request.id = cluster.worker.id || undefined
+        request.id = opts.clusterId || undefined
         router.hitServers(request, function getResponse(lbResponse) {
             response.writeHead(lbResponse.statusCode)
             if (lbResponse) {
@@ -89,3 +87,5 @@ function serverInit() {
     });
 
 }
+
+module.exports = server
