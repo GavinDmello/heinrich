@@ -16,7 +16,7 @@ router.hitServers = function(request, cb) {
     request.servers = servers
 
     if (servers.length === 0) {
-        cb({ statusCode: 404 })
+        cb({ statusCode: 503 })
         return
     }
 
