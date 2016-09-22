@@ -9,41 +9,38 @@ network.prototype.getRequest = function(hostInfo, request, done) {
 
     request.headers.host = hostInfo.host + ':' + hostInfo.port
 
-    var options = {
-        host: hostInfo.host,
-        port: hostInfo.port,
-        path: request.path || '/',
-        headers: request.headers,
-        method: request.method
-    };
-
     callback = function(response) {
         response.pipe(concat(function(data) {
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
 
-    var req = http.request(options, callback).end()
+    var req = http.request({
+        host: hostInfo.host,
+        port: hostInfo.port,
+        path: request.path || '/',
+        headers: request.headers,
+        method: request.method
+    }, callback).end()
 }
 
 
 network.prototype.postRequest = function(hostInfo, request, done) {
     request.headers.host = hostInfo.host + ':' + hostInfo.port
 
-    var options = {
-        host: hostInfo.host,
-        port: hostInfo.port,
-        path: request.path || '/',
-        method: 'POST'
-    }
     request.pipe(concat(function(data) {
-        var req = http.request(options, callback)
+        var req = http.request({
+            host: hostInfo.host,
+            port: hostInfo.port,
+            path: request.path || '/',
+            method: 'POST'
+        }, callback)
         req.write(data)
         req.end()
 
     }))
     callback = function(response) {
-        response.pipe(concat(function(data) {s
+        response.pipe(concat(function(data) {
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
