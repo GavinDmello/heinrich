@@ -4,7 +4,8 @@
   "description": "A lightweight load-balancer written in Node.js",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": " node main.js",
+    "test": "mocha ./tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,10 @@
     "async": "^2.0.1",
     "concat-stream": "^1.5.2",
     "tcp-ping": "^0.1.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0"
   }
 }
