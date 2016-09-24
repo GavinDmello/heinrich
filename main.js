@@ -4,7 +4,9 @@ var config = require('./config.json')
 var router = require('./router')
 var Health = require('./health').health
 var health = new Health()
-var PORT = config.port || 3001;
+var loggerUtility = require('./utilities/logger')
+var logger = new loggerUtility()
+var PORT = config.port || 3001
 var server, http
 cluster.schedulingPolicy = cluster.SCHED_RR
 
@@ -12,16 +14,21 @@ if (config.multiCore) {
     if (cluster.isMaster) {
         for (var i = 0; i < numCPUs; i++) {
             // Create a worker
-            cluster.fork();
+            cluster.fork()
         }
         // restart if process dies
         cluster.on('exit', function(worker, code, signal) {
-            cluster.fork();
-        });
+            logger.log('Worker died, restarting. check error logs',worker)
+            logger.error('worker dead', worker, code, signal)
+            cluster.fork()
+        })
     } else {
+        logger.log('starting server in multi core mode!')
+        logger.log('creating', numCPUs, ' processes')
         serverInit({ clusterId: cluster.worker.id })
     }
 } else {
+    logger.log('starting server without worker processes')
     serverInit({}) // No cluster present so no Id
 }
 
@@ -67,23 +74,24 @@ function serverInit(opts) {
         var fs = require('fs')
         http = require('https')
         if (!config.key || !config.cert) {
-            console.log('certificated not provided')
-            process.exit(0)
+            logger.error('certificated not provided, Please test the key & certificate')
+            process.exit(2)
         }
         var options = {
             key: fs.readFileSync(config.key),
             cert: fs.readFileSync(config.cert)
         }
-        server = http.createServer(options, handleAnyRequest);
+        server = http.createServer(options, handleAnyRequest)
 
     } else {
         http = require('http')
-        server = http.createServer(handleAnyRequest);
+        server = http.createServer(handleAnyRequest)
     }
 
 
     server.listen(PORT, function() {
-        console.log("Server listening on", PORT);
+        console.log(PORT)
+        logger.log("Server listening on", PORT)
     });
 
 }

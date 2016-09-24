@@ -1,5 +1,7 @@
 var http = require('http')
 var concat = require('concat-stream')
+var loggerUtility = require('./utilities/logger')
+var logger = new loggerUtility()
 
 function network() {}
 
@@ -10,6 +12,10 @@ network.prototype.getRequest = function(hostInfo, request, done) {
     request.headers.host = hostInfo.host + ':' + hostInfo.port
 
     callback = function(response) {
+        response.on('error', function(error) {
+            logger.error(error)
+            done({ statusCode: 404 })
+        })
         response.pipe(concat(function(data) {
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
@@ -40,6 +46,10 @@ network.prototype.postRequest = function(hostInfo, request, done) {
 
     }))
     callback = function(response) {
+        response.on('error', function(error) {
+            logger.error(error)
+            done({ statusCode: 404 })
+        })
         response.pipe(concat(function(data) {
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))

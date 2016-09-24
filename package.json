@@ -4,7 +4,7 @@
   "description": "A lightweight load-balancer written in Node.js",
   "main": "main.js",
   "scripts": {
-    "start": " node main.js",
+    "start": "node --stack-size=4096 --max-old-space-size=1024 main.js &",
     "test": "mocha ./tests/*.js"
   },
   "repository": {
