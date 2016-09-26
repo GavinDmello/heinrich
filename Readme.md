@@ -14,10 +14,7 @@ Example :-
 {
     "port" : 8080,
     "pingInterval" : 2000,
-    "servers" : [
-    { "host": "127.0.0.1", "port":8090},
-    {"host": "127.0.0.1", "port": 9000}
-    ],
+    "servers" : [{ "host": "127.0.0.1", "port":8090},{"host": "127.0.0.1", "port": 9000}],
     "mode" : 1,
     "blackListAddress": ["1.2.3.4"],
     "blockedUserAgent":[],
