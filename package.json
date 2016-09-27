@@ -20,6 +20,8 @@
   "dependencies": {
     "async": "^2.0.1",
     "concat-stream": "^1.5.2",
+    "nodemailer": "^2.6.4",
+    "nodemailer-smtp-transport": "^2.7.2",
     "tcp-ping": "^0.1.1"
   },
   "devDependencies": {

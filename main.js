@@ -90,7 +90,6 @@ function serverInit(opts) {
 
 
     server.listen(PORT, function() {
-        console.log(PORT)
         logger.log("Server listening on", PORT)
     });
 

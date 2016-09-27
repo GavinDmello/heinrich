@@ -7,7 +7,15 @@
     "blockedUserAgent":[],
     "requestTimeout": 10,
     "https" : false,
-    "multiCore" : true,
+    "multiCore" : false,
+    "reporting" : {
+        "host":"localhost",
+        "port": 5000,
+        "secure": false,
+        "user":"abc@abc.com",
+        "pass":"123",
+        "receipients":["xyz@abc.com","ijk@abc.com"]
+    },
     "key" : "",
     "cert": ""
 }
