@@ -1,30 +1,38 @@
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var config = require('./config.json')
-var router = require('./router')
 var Health = require('./health').health
 var health = new Health()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
+var mailerUtilty = require('./utilities/mailer')
+var mailer = new mailerUtilty()
 var PORT = config.port || 3001
 var server, http
+var router = require('./router')
+var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 
 if (config.multiCore) {
     if (cluster.isMaster) {
         for (var i = 0; i < numCPUs; i++) {
             // Create a worker
-            cluster.fork()
+            var worker = cluster.fork()
+            worker.on('message', function(msg) {
+                mailer.handleAction(msg)
+            })
+
         }
         // restart if process dies
         cluster.on('exit', function(worker, code, signal) {
-            logger.log('Worker died, restarting. check error logs',worker)
+            logger.log('Worker died, restarting. check error logs', worker)
             logger.error('worker dead', worker, code, signal)
             cluster.fork()
         })
-    } else {
+
         logger.log('starting server in multi core mode!')
         logger.log('creating', numCPUs, ' processes')
+    } else {
         serverInit({ clusterId: cluster.worker.id })
     }
 } else {

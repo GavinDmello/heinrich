@@ -8,8 +8,9 @@ var logger = new loggerUtility()
 var serverOptions = {}
 var smtpConfig = config.reporting
 var mailSent = false
-function mailer(){}
+var nextTick = process.nextTick
 
+function mailer() {}
 
 if (!smtpConfig.user || !smtpConfig.pass) {
     logger.error("Email or password not provided")
@@ -45,6 +46,7 @@ mailer.prototype.sendDownTimeMail = function(params) {
     if (mailSent) {
         return
     }
+    mailSent = true
     smtpTransport.sendMail({
         from: config.reporting.email,
         to: config.reporting.receipients,
@@ -55,25 +57,32 @@ mailer.prototype.sendDownTimeMail = function(params) {
             logger.error(error)
 
         } else {
-            mailSent = true
             that = null
-            //logger.log("Email sent to all receipients: ", JSON.stringify(response))
         }
     })
 
 }
 
 mailer.prototype.getText = function(servers) {
-    var serverString = "The following servers went down \n"
+    var serverString = "The following server(s) went down \n"
     for (var i = 0; i < servers.length; i++) {
         serverString += "host : " + servers[i].host + " port: " + servers[i].port + '\n'
     }
     serverString += "The following message was sent by heinrich"
-    return  serverString
+    return serverString
 }
 
-mailer.prototype.resetFlag = function(){
+mailer.prototype.resetFlag = function() {
     mailSent = false
+}
+
+mailer.prototype.handleAction = function(msg) {
+    if (msg.type === 'downtime') {
+        msg.mailer.sendDownTimeMail({ downServers: msg.health.downServers })
+    }
+    if (msg.type === 'reset') {
+        msg.mailer.resetFlag()
+    }
 }
 
 mailer.prototype.close = function() {

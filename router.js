@@ -6,21 +6,32 @@ var network = new Network()
 var strategies = require('./strategies')
 var serverListener = require('./health').eventListener
 var servers = []
-var mailerUtilty = require('./utilities/mailer')
-var mailer = new mailerUtilty()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
-var nextTick = process.nextTick
+var mailerUtilty = require('./utilities/mailer')
+var mailer = new mailerUtilty()
+var alreadyFlagged = false
+var alreadyCheckDownTime = false
 
 serverListener.on('health', function(serverHealth) {
     servers = serverHealth.upServers
-    if (serverHealth.upServers.length === 0 || serverHealth.downServers.length != 0) {
-        mailer.sendDownTimeMail({ downServers: serverHealth.downServers })
+    var send = process.send || mailer.handleAction
+    if (!alreadyCheckDownTime) {
+        var condition = serverHealth.upServers.length === 0 || serverHealth.downServers.length !== 0
+        if (condition) {
+            alreadyFlagged = false
+            alreadyCheckDownTime = true
+
+            send({ type: 'downtime', health: serverHealth, mailer: mailer })
+        }
     }
 
-    if (serverHealth.downServers.length === 0) {
-        nextTick(mailer.resetFlag)
+    if (serverHealth.downServers.length === 0 && !alreadyFlagged) {
+        alreadyFlagged = true
+        alreadyCheckDownTime = false
+        send({ type: 'reset', mailer: mailer })
     }
+
 })
 
 router.hitServers = function(request, cb) {
