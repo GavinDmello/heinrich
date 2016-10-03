@@ -21,6 +21,14 @@ Example :-
     "requestTimeout": 10,
     "https" : true,
     "multiCore" : true,
+    "reporting" : {
+        "host":"localhost",
+        "port": 5000,
+        "secure": true,
+        "user":"abc@abc.com",
+        "pass":"123",
+        "receipients":["xyz@abc.com","ijk@abc.com"]
+    },
     "key" : "/home/keys/key.pem",
     "cert": "/home/keys/cert.pem"
 }
@@ -55,6 +63,10 @@ This is counter against the `slowloris` attack. This could also happen if the cl
 #### https
 You can run the load-balancer in https mode by setting https flag equal to true. By default the load-balancer will run in http mode.
 Remember to provide the key and the certificate. It will contain a boolean value (true/false)
+
+#### reporting
+You can configure heinrich with an smtp server. Whenever backend server(s) experience downtime, the
+configured email receipients will be notified via email about the downtime. You will need to provide the host, port  of the smtp server  and also the credentials of the user sending the email in case secure mode is enabled.
 
 #### multiCore
 Enabling this feature ensures that all your cores are utilized. This mode guarantees more throughput as you have more processes serving requests. Disabling this feature will run a single loadbalancer which is highly unfavourable. It will contain a boolean value (true/false)
