@@ -12,7 +12,7 @@
     "url": "git+https://github.com/GavinDmello/heinrich.git"
   },
   "author": "GavinDmello",
-  "license": "ISC",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/GavinDmello/heinrich/issues"
   },
