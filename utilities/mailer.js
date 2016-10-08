@@ -13,12 +13,12 @@ var nextTick = process.nextTick
 function mailer() {}
 
 if (!smtpConfig.user || !smtpConfig.pass) {
-    logger.error("Email or password not provided")
+    throw new Error("Email or password not provided")
     return
 }
 
 if (smtpConfig.receipients.length === 0) {
-    logger.error('No receipients provided')
+    throw new Error('No receipients provided')
     return
 }
 
