@@ -33,14 +33,15 @@ network.prototype.getRequest = function(hostInfo, request, done) {
 
 network.prototype.postRequest = function(hostInfo, request, done) {
     request.headers.host = hostInfo.host + ':' + hostInfo.port
-
     request.pipe(concat(function(data) {
         var req = http.request({
             host: hostInfo.host,
             port: hostInfo.port,
-            path: request.path || '/',
+            path: request.url || '/',
             method: 'POST'
         }, callback)
+
+        data = checkType(data)
         req.write(data)
         req.end()
 
@@ -51,6 +52,7 @@ network.prototype.postRequest = function(hostInfo, request, done) {
             done({ statusCode: 404 })
         })
         response.pipe(concat(function(data) {
+            data = checkType(data)
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
@@ -66,4 +68,11 @@ network.prototype.sendRequest = function(hostInfo, request, cb) {
             cb(response)
         })
     }
+}
+
+function checkType(data) {
+    if (typeof data !== 'string') {
+        data = data.toString()
+    }
+    return data
 }

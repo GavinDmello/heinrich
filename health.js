@@ -8,6 +8,13 @@ var downServers = []
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
 
+if (process.env.NODE_ENV === 'test') {
+    servers = [{
+        host: 'httpbin.org',
+        port: 80
+    }]
+}
+
 module.exports = { eventListener: serverTransmitter, health: health }
 
 function health() {}

@@ -13,7 +13,7 @@ var router = require('./router')
 var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 
-if (config.multiCore) {
+if (config.multiCore && !process.env.NODE_ENV === 'test') {
     if (cluster.isMaster) {
         for (var i = 0; i < numCPUs; i++) {
             // Create a worker

@@ -10,12 +10,22 @@ var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
 var mailerUtilty = require('./utilities/mailer')
 var mailer = new mailerUtilty()
+var EE = require('events').EventEmitter
+var status = new EE()
 var alreadyFlagged = false
 var alreadyCheckDownTime = false
+var firstServerCheck = false
+var nextTick = process.nextTick
 
 serverListener.on('health', function(serverHealth) {
     servers = serverHealth.upServers
     var send = process.send || mailer.handleAction
+
+    if (!firstServerCheck) {
+        firstServerCheck = true
+        status.emit('firstCheck', { ping: true })
+    }
+
     if (!alreadyCheckDownTime) {
         var condition = serverHealth.upServers.length === 0 || serverHealth.downServers.length !== 0
         if (condition) {
@@ -36,6 +46,12 @@ serverListener.on('health', function(serverHealth) {
 
 router.hitServers = function(request, cb) {
     request.servers = servers
+    if (!firstServerCheck) {
+        status.on('firstCheck', function(done) {
+            nextTick(router.hitServers, request, cb)
+        })
+        return
+    }
 
     if (servers.length === 0) {
         cb({ statusCode: 503 })

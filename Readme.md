@@ -89,6 +89,7 @@ This will have the absolute address of the certificate.
 - [x] explicit blacklist
 - [x] slowloris counter
 - [x] email reporting about downtime
+- [ ] unit test cases
 - [ ] request queuing
 - [ ] DOS counter
 - [ ] DDOS counter
