@@ -1,11 +1,9 @@
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
-//Require the dev-dependencies
-var chai = require('chai');
+//Requiring the dev-dependencies
 var request = require('supertest');
 var server = require('../main');
-var should = chai.should();
 
 describe('simple tests', () => {
     beforeEach((done) => {
