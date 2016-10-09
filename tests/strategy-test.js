@@ -20,4 +20,19 @@ describe('testing status codes', () => {
         expect(roundRobin.roundRobinIndexCalculation(1, 5)).to.equal(2)
         done()
     })
+
+    it('least connections test', (done) => {
+        leastConn._serverConnections = { '1.1.1.180': 9, '1.1.1.190': 10 }
+        leastConn.selectLeastActive([{
+            host: '1.1.1.1',
+            port: 80
+        }, {
+            host:'1.1.1.1',
+            port: 90
+        }], (select) => {
+            expect('1.1.1.180', select.minifiedServerString)
+            done()
+        })
+
+    })
 })
