@@ -1,4 +1,4 @@
- # Heinrich
+# Heinrich
 
 A lightweight load-balancer written in Node.js which is highly available. It's made using the Reactor pattern in Node along with support for worker processes (one per core). You can however run a simple load-balancer with a single process by disabling the multiCore feature.
 
