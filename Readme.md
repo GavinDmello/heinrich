@@ -1,11 +1,14 @@
-# Heinrich
+ # Heinrich
 
 A lightweight load-balancer written in Node.js which is highly available. It's made using the Reactor pattern in Node along with support for worker processes (one per core). You can however run a simple load-balancer with a single process by disabling the multiCore feature.
 
 The load-balancer is programmed for high availability i.e if the worker process gets killed, it will be restarted. This ensures that the load on the other processes doesn't increase substantially.
 
+You can also configure an smtp server with `heinrich`. Mails will be sent whenever one or more of the backend servers go down.
+
 Currently you'll have to clone the project & run the main file. I'll be writing installation & startup scripts for ubuntu & centos servers.
 
+-------------------------------------------------------
 ### Configuration file :-
 The config.json file holds the entire config.
 
@@ -33,6 +36,8 @@ Example :-
     "cert": "/home/keys/cert.pem"
 }
 ```
+
+-------------------------------------------------------
 #### Options :-
 #### port
 The port on which your load-balancer will run. The worker processes will share the same port and internally load-balance.
@@ -77,7 +82,7 @@ This will have the absolute address of the key
 #### cert
 This will have the absolute address of the certificate.
 
-
+-------------------------------------------------------
 ### Project roadmap :-
 
 - [x] random routing

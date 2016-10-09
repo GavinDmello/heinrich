@@ -3,9 +3,11 @@ function logger() {}
 module.exports = logger
 
 logger.prototype.log = function() {
-    console.log(new Date().toLocaleString(), arguments)
+    if (process.env.NODE_ENV !== 'test') {
+        console.log(new Date().toLocaleString(), arguments)
+    }
 }
 
-logger.prototype.error = function(){
+logger.prototype.error = function() {
     console.log(new Date().toLocaleString(), arguments)
 }
