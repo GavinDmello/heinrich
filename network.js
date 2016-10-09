@@ -15,8 +15,10 @@ network.prototype.getRequest = function(hostInfo, request, done) {
         response.on('error', function(error) {
             logger.error(error)
             done({ statusCode: 404 })
+            return
         })
         response.pipe(concat(function(data) {
+            data = checkType(data)
             done({ body: data, headers: response.headers, statusCode: response.statusCode })
         }))
     }
