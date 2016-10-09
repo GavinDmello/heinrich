@@ -15,6 +15,12 @@ if (process.env.NODE_ENV === 'test') {
     }]
 }
 
+// If no servers provided in the config then throw error
+if (servers.length === 0) {
+    throw new Error('Please provide the IPs of backend servers')
+    return
+}
+
 module.exports = { eventListener: serverTransmitter, health: health }
 
 function health() {}
