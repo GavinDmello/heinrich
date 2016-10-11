@@ -77,11 +77,12 @@ mailer.prototype.resetFlag = function() {
 }
 
 mailer.prototype.handleAction = function(msg) {
+    console.log(this)
     if (msg.type === 'downtime') {
-        msg.mailer.sendDownTimeMail({ downServers: msg.health.downServers })
+        that.sendDownTimeMail({ downServers: msg.health.downServers })
     }
     if (msg.type === 'reset') {
-        msg.mailer.resetFlag()
+        this.resetFlag()
     }
 }
 

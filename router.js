@@ -8,18 +8,19 @@ var serverListener = require('./health').eventListener
 var servers = []
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
-var mailerUtilty = require('./utilities/mailer')
-var mailer = new mailerUtilty()
+var genericUtility = require('./utilities/generic-utility')
 var EE = require('events').EventEmitter
 var status = new EE()
 var alreadyFlagged = false
 var alreadyCheckDownTime = false
 var firstServerCheck = false
+var noOfDownServers = 0
 var nextTick = process.nextTick
 
 serverListener.on('health', function(serverHealth) {
     servers = serverHealth.upServers
-    var send = process.send || mailer.handleAction
+
+    var send = process.send || genericUtility.handleAction
 
     if (!firstServerCheck) {
         firstServerCheck = true
@@ -27,21 +28,26 @@ serverListener.on('health', function(serverHealth) {
     }
 
     if (!alreadyCheckDownTime) {
-        var condition = serverHealth.upServers.length === 0 || serverHealth.downServers.length !== 0
+        var condition = serverHealth.downServers.length !== 0
         if (condition) {
+            noOfDownServers = serverHealth.downServers.length
             alreadyFlagged = false
             alreadyCheckDownTime = true
-
-            send({ type: 'downtime', health: serverHealth, mailer: mailer })
+            send({ type: 'downtime', health: serverHealth })
         }
     }
 
     if (serverHealth.downServers.length === 0 && !alreadyFlagged) {
         alreadyFlagged = true
         alreadyCheckDownTime = false
-        send({ type: 'reset', mailer: mailer })
+        noOfDownServers =  serverHealth.downServers.length
+        send({ type: 'reset', health: serverHealth})
     }
 
+    if (serverHealth.downServers.length !== noOfDownServers) {
+        noOfDownServers = serverHealth.downServers.length
+        send({ type: 'healthchange', health : serverHealth})
+    }
 })
 
 router.hitServers = function(request, cb) {

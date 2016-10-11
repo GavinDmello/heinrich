@@ -5,8 +5,7 @@ var Health = require('./health').health
 var health = new Health()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
-var mailerUtilty = require('./utilities/mailer')
-var mailer = new mailerUtilty()
+var genericUtility = require('./utilities/generic-utility')
 var PORT = config.port || 3001
 var server, http
 var router = require('./router')
@@ -19,7 +18,7 @@ if (config.multiCore && !process.env.NODE_ENV === 'test') {
             // Create a worker
             var worker = cluster.fork()
             worker.on('message', function(msg) {
-                mailer.handleAction(msg)
+                genericUtility.handleAction(msg)
             })
 
         }
