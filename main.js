@@ -39,8 +39,6 @@ if (config.multiCore && !process.env.NODE_ENV === 'test') {
     serverInit({}) // No cluster present so no Id
 }
 
-
-
 function serverInit(opts) {
     health.ping()
 

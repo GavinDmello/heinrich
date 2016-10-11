@@ -11,13 +11,11 @@ var logger = new loggerUtility()
 var genericUtility = require('./utilities/generic-utility')
 var EE = require('events').EventEmitter
 var status = new EE()
-var alreadyFlagged = false
-var alreadyCheckDownTime = false
-var firstServerCheck = false
+var alreadyFlagged = alreadyCheckDownTime = firstServerCheck = false
 var noOfDownServers = 0
 var nextTick = process.nextTick
 
-serverListener.on('health', function(serverHealth) {
+serverListener.on('health', function serverListenerCb(serverHealth) {
     servers = serverHealth.upServers
 
     var send = process.send || genericUtility.handleAction
@@ -40,13 +38,13 @@ serverListener.on('health', function(serverHealth) {
     if (serverHealth.downServers.length === 0 && !alreadyFlagged) {
         alreadyFlagged = true
         alreadyCheckDownTime = false
-        noOfDownServers =  serverHealth.downServers.length
-        send({ type: 'reset', health: serverHealth})
+        noOfDownServers = serverHealth.downServers.length
+        send({ type: 'reset', health: serverHealth })
     }
 
     if (serverHealth.downServers.length !== noOfDownServers) {
         noOfDownServers = serverHealth.downServers.length
-        send({ type: 'healthchange', health : serverHealth})
+        send({ type: 'healthchange', health: serverHealth })
     }
 })
 
@@ -66,22 +64,20 @@ router.hitServers = function(request, cb) {
 
     switch (config.mode) {
         case 1:
-            strategies.randomRouter.hitRandom(request, function(response) {
-                cb(response)
-            })
+            strategies.randomRouter.hitRandom(request, relayResponse)
             break
 
         case 2:
-            strategies.roundRobinRouter.hitRoundRobin(request, function(response) {
-                cb(response)
-            })
+            strategies.roundRobinRouter.hitRoundRobin(request, relayResponse)
             break
 
         case 3:
-            strategies.leastConnectionsRouter.hitLeastConnections(request, function(response) {
-                cb(response)
-            })
+            strategies.leastConnectionsRouter.hitLeastConnections(request, relayResponse)
             break
+    }
+
+    function relayResponse(response) {
+        cb(response)
     }
 }
 

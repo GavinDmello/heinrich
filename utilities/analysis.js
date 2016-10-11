@@ -1,8 +1,7 @@
 var config = require('../config.json')
 var loggerUtility = require('./logger')
 var logger = new loggerUtility()
-var socket
-var socketHost
+var socket, socketHost
 
 if (!config.analytics.host || !config.analytics.port) {
     logger.error('Host or port not provided for analytics')
