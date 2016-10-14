@@ -101,3 +101,8 @@ This will have the absolute address of the certificate.
 - [ ] request queuing
 - [ ] DOS counter
 - [ ] DDOS counter
+
+-------------------------------------------------------
+### LICENSE
+
+BSD
