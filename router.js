@@ -64,20 +64,16 @@ router.hitServers = function(request, cb) {
 
     switch (config.mode) {
         case 1:
-            strategies.randomRouter.hitRandom(request, relayResponse)
+            strategies.randomRouter.hitRandom(request, cb)
             break
 
         case 2:
-            strategies.roundRobinRouter.hitRoundRobin(request, relayResponse)
+            strategies.roundRobinRouter.hitRoundRobin(request, cb)
             break
 
         case 3:
-            strategies.leastConnectionsRouter.hitLeastConnections(request, relayResponse)
+            strategies.leastConnectionsRouter.hitLeastConnections(request, cb)
             break
-    }
-
-    function relayResponse(response) {
-        cb(response)
     }
 }
 
