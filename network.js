@@ -2,6 +2,9 @@ var http = require('http')
 var concat = require('concat-stream')
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
+var config = require('./config.json')
+var limitBandwidth = config.limitBandwidth || {}
+var Throttle = require('stream-throttle').Throttle
 
 function network() {}
 
@@ -17,9 +20,14 @@ network.prototype.getRequest = function(hostInfo, request, done) {
             done({ statusCode: 404 })
             return
         })
+
         response.pipe(concat(function(data) {
             data = checkType(data)
-            done({ body: data, headers: response.headers, statusCode: response.statusCode })
+            done({
+                body: data,
+                headers: response.headers,
+                statusCode: response.statusCode
+            })
         }))
     }
 
@@ -35,6 +43,11 @@ network.prototype.getRequest = function(hostInfo, request, done) {
 
 network.prototype.postRequest = function(hostInfo, request, done) {
     request.headers.host = hostInfo.host + ':' + hostInfo.port
+
+    if (limitBandwidth.upStream) {
+        request = throttleStream(request, limitBandwidth.upStream)
+    }
+
     request.pipe(concat(function(data) {
         var req = http.request({
             host: hostInfo.host,
@@ -53,9 +66,18 @@ network.prototype.postRequest = function(hostInfo, request, done) {
             logger.error(error)
             done({ statusCode: 404 })
         })
+
+        if (limitBandwidth.downStream) {
+            response = throttleStream(response, limitBandwidth.downStream)
+        }
+
         response.pipe(concat(function(data) {
             data = checkType(data)
-            done({ body: data, headers: response.headers, statusCode: response.statusCode })
+            done({
+                body: data,
+                headers: response.headers,
+                statusCode: response.statusCode
+            })
         }))
     }
 }
@@ -77,4 +99,9 @@ function checkType(data) {
         data = data.toString()
     }
     return data
+}
+
+function throttleStream(stream, rate) {
+    stream.pipe(new Throttle({ rate: rate }))
+    return stream
 }

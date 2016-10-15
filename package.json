@@ -7,7 +7,9 @@
     "start": "node --stack-size=4096 --max-old-space-size=1024 main.js &",
     "test": "mocha ./tests/*.js  --timeout 15000"
   },
-  "pre-commit": [ "test" ],
+  "pre-commit": [
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GavinDmello/heinrich.git"
@@ -24,6 +26,7 @@
     "nodemailer": "^2.6.4",
     "nodemailer-smtp-transport": "^2.7.2",
     "socket.io-client": "^1.5.0",
+    "stream-throttle": "^0.1.3",
     "tcp-ping": "^0.1.1"
   },
   "devDependencies": {

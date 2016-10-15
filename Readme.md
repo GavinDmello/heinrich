@@ -10,7 +10,8 @@ Currently you'll have to clone the project & run the main file. I'll be writing 
 
 -------------------------------------------------------
 ### Configuration file :-
-The config.json file holds the entire config.
+The config.json file holds the entire config. An example config is shown below
+It has the bare minimum you require to run this load balancer.
 
 Example :-
 ```json
@@ -24,14 +25,6 @@ Example :-
     "requestTimeout": 10,
     "https" : true,
     "multiCore" : true,
-    "reporting" : {
-        "host":"localhost",
-        "port": 5000,
-        "secure": true,
-        "user":"abc@abc.com",
-        "pass":"123",
-        "receipients":["xyz@abc.com","ijk@abc.com"]
-    },
     "key" : "/home/keys/key.pem",
     "cert": "/home/keys/cert.pem"
 }
@@ -73,8 +66,31 @@ Remember to provide the key and the certificate. It will contain a boolean value
 You can configure heinrich with an smtp server. Whenever backend server(s) experience downtime, the
 configured email receipients will be notified via email about the downtime. You will need to provide the host, port  of the smtp server  and also the credentials of the user sending the email in case secure mode is enabled.
 
+```json
+    "reporting": {
+        "host": "localhost",
+        "port": 5000,
+        "secure": true,
+        "user": "abc@abc.com",
+        "pass": "123",
+        "receipients": ["xyz@abc.com", "ijk@abc.com"]
+    }
+```
+
 #### multiCore
 Enabling this feature ensures that all your cores are utilized. This mode guarantees more throughput as you have more processes serving requests. Disabling this feature will run a single loadbalancer which is highly unfavourable. It will contain a boolean value (true/false)
+
+#### limitBandwidth
+This is an optional property. If you want to limit the upstream & downstream bandwidth of the
+user then you provide the rates in terms of bytes.This will be done on for every connection.
+You can put this in the config.json where upstream & downstreams are the rates.
+
+```json
+    "limitBandwidth": {
+        "upStream": 10,
+        "downStream": 10
+    }
+```
 
 #### key
 This will have the absolute address of the key
@@ -94,6 +110,7 @@ This will have the absolute address of the certificate.
 - [x] explicit blacklist
 - [x] slowloris counter
 - [x] email reporting about downtime
+- [x] bandwidth limiting for upstream & downstream components
 - [ ] analytics
 - [ ] external cache
 - [ ] rate limiting
