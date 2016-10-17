@@ -1,6 +1,6 @@
 {
   "name": "heinrich",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A lightweight load-balancer written in Node.js",
   "main": "main.js",
   "scripts": {
