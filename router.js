@@ -15,7 +15,38 @@ var alreadyFlagged = alreadyCheckDownTime = firstServerCheck = false
 var noOfDownServers = 0
 var nextTick = process.nextTick
 
-serverListener.on('health', function serverListenerCb(serverHealth) {
+serverListener.on('health', checkDownTime)
+
+router.hitServers = function(request, cb) {
+    request.servers = servers
+    if (!firstServerCheck) {
+        status.on('firstCheck', function(done) {
+            nextTick(router.hitServers, request, cb)
+        })
+        return
+    }
+
+    if (servers.length === 0) {
+        cb({ statusCode: 503 })
+        return
+    }
+
+    switch (config.mode) {
+        case 1:
+            strategies.randomRouter.hitRandom(request, cb)
+            break
+
+        case 2:
+            strategies.roundRobinRouter.hitRoundRobin(request, cb)
+            break
+
+        case 3:
+            strategies.leastConnectionsRouter.hitLeastConnections(request, cb)
+            break
+    }
+}
+
+function checkDownTime(serverHealth) {
     servers = serverHealth.upServers
 
     var send = process.send || genericUtility.handleAction
@@ -45,35 +76,6 @@ serverListener.on('health', function serverListenerCb(serverHealth) {
     if (serverHealth.downServers.length !== noOfDownServers) {
         noOfDownServers = serverHealth.downServers.length
         send({ type: 'healthchange', health: serverHealth })
-    }
-})
-
-router.hitServers = function(request, cb) {
-    request.servers = servers
-    if (!firstServerCheck) {
-        status.on('firstCheck', function(done) {
-            nextTick(router.hitServers, request, cb)
-        })
-        return
-    }
-
-    if (servers.length === 0) {
-        cb({ statusCode: 503 })
-        return
-    }
-
-    switch (config.mode) {
-        case 1:
-            strategies.randomRouter.hitRandom(request, cb)
-            break
-
-        case 2:
-            strategies.roundRobinRouter.hitRoundRobin(request, cb)
-            break
-
-        case 3:
-            strategies.leastConnectionsRouter.hitLeastConnections(request, cb)
-            break
     }
 }
 
