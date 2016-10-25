@@ -64,6 +64,11 @@ function serverInit(opts) {
             return
         }
 
+        if (!config.rateLimit) { // No rate limiting
+            forwardRequest(request, response)
+            return
+        }
+
         var rateLimitedRoutes = config.rateLimit.rateLimitedRoutes
         if (rateLimitedRoutes && rateLimitedRoutes.indexOf(request.url) > -1) {
             var clientHash = clientIp + request.url

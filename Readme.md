@@ -92,6 +92,16 @@ You can put this in the config.json where upstream & downstreams are the rates.
     }
 ```
 
+#### RateLimiting
+This is an optional property. You can provide the routes to be rate limited and the interval. The way this will work is that it will allow every client IP to hit the routes only once during that interval. Other requests within that interval will be responded with a `503` response. 
+Here the `rateLimitedRoutes` property is an array of strings and `rateLimitInterval` is an integer which denotes the time in milliseconds.
+```json
+    "rateLimit": {
+        "rateLimitedRoutes" : ['/signup','/register'],
+        "rateLimitInterval" : 1000
+    }
+```
+
 #### key
 This will have the absolute address of the key
 
@@ -111,9 +121,9 @@ This will have the absolute address of the certificate.
 - [x] slowloris counter
 - [x] email reporting about downtime
 - [x] bandwidth limiting for upstream & downstream components
+- [x] rate limiting
 - [ ] analytics
 - [ ] external cache
-- [ ] rate limiting
 - [ ] unit test cases
 - [ ] request queuing
 - [ ] DOS counter

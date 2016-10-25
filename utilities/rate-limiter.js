@@ -1,8 +1,10 @@
 var levelup = require('levelup')
 var db = levelup('./rates')
 var config = require('../config.json')
-var rateLimitInterval = config.rateLimit.rateLimitInterval || 1000
+var rateLimitInterval = config.rateLimit ? (config.rateLimit.rateLimitInterval || 1000) : 1000
 var rateLimiter = function() {}
+
+
 
 module.exports = rateLimiter
 

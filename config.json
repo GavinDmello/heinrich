@@ -12,10 +12,6 @@
         "upStream": 10,
         "downStream": 10
     },
-    "rateLimit": {
-        "rateLimitedRoutes" : [],
-        "rateLimitInterval" : 1000
-    },
     "key": "",
     "cert": ""
 }
