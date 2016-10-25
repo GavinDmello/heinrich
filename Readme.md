@@ -97,7 +97,7 @@ This is an optional property. You can provide the routes to be rate limited and 
 Here the `rateLimitedRoutes` property is an array of strings and `rateLimitInterval` is an integer which denotes the time in milliseconds.
 ```json
     "rateLimit": {
-        "rateLimitedRoutes" : ['/signup','/register'],
+        "rateLimitedRoutes" : ["/signup", "/register"],
         "rateLimitInterval" : 1000
     }
 ```
