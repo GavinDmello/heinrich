@@ -6,6 +6,8 @@ var health = new Health()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
 var genericUtility = require('./utilities/generic-utility')
+var RateLimter = require('./utilities/rate-limiter')
+var rateLimiter = new RateLimter()
 var PORT = config.port || 3001
 var server, http
 var router = require('./router')
@@ -59,20 +61,22 @@ function serverInit(opts) {
         if ((clientAddressIndex > -1) || (blockedUserAgent.indexOf(userAgent) > -1)) {
             response.writeHead(500)
             response.end()
-            clientAddressIndex = clientIp = blockedUserAgent = userAgent = null
             return
         }
 
-        request.id = opts.clusterId || undefined
-        router.hitServers(request, function getResponse(lbResponse) {
-            response.writeHead(lbResponse.statusCode)
-            if (lbResponse) {
-                response.end(lbResponse.body)
-            } else {
-                response.end()
-            }
+        var rateLimitedRoutes = config.rateLimit.rateLimitedRoutes
+        if (rateLimitedRoutes && rateLimitedRoutes.indexOf(request.url) > -1) {
+            var clientHash = clientIp + request.url
+            rateLimiter.checkRequestForRate({
+                clientHash: clientHash,
+                request: request,
+                response: response
+            }, rateLimitResponse)
+        } else {
+            forwardRequest(request, response)
+        }
 
-        })
+
     }
 
     if (config.https) {
@@ -96,7 +100,31 @@ function serverInit(opts) {
 
     server.listen(PORT, function() {
         logger.log("Server listening on", PORT)
-    });
+    })
+
+    function forwardRequest(request, response) {
+        request.id = opts.clusterId || undefined
+        router.hitServers(request, function getResponse(lbResponse) {
+            response.writeHead(lbResponse.statusCode)
+            if (lbResponse) {
+                response.end(lbResponse.body)
+            } else {
+                response.end()
+            }
+
+        })
+    }
+
+    function rateLimitResponse(params) {
+        var request = params.request
+        var response = params.response
+        if (params.forward) {
+            forwardRequest(request, response)
+        } else {
+            response.writeHead(503) // server not available as rate limiting is on
+            response.end()
+        }
+    }
 
 }
 

@@ -8,17 +8,13 @@
     "requestTimeout": 10,
     "https": false,
     "multiCore": true,
-    "reporting": {
-        "host": "localhost",
-        "port": 5000,
-        "secure": true,
-        "user": "abc@abc.com",
-        "pass": "123",
-        "receipients": ["xyz@abc.com", "ijk@abc.com"]
-    },
     "limitBandwidth": {
         "upStream": 10,
         "downStream": 10
+    },
+    "rateLimit": {
+        "rateLimitedRoutes" : [],
+        "rateLimitInterval" : 1000
     },
     "key": "",
     "cert": ""
