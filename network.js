@@ -13,7 +13,7 @@ module.exports = network
 network.prototype.getRequest = function(hostInfo, request, done) {
 
     request.headers.host = hostInfo.host + ':' + hostInfo.port
-
+    
     callback = function(response) {
         response.on('error', function(error) {
             logger.error(error)
@@ -25,7 +25,6 @@ network.prototype.getRequest = function(hostInfo, request, done) {
             data = checkType(data)
             done({
                 body: data,
-                headers: response.headers,
                 statusCode: response.statusCode
             })
         }))
@@ -37,7 +36,13 @@ network.prototype.getRequest = function(hostInfo, request, done) {
         path: request.path || '/',
         headers: request.headers,
         method: request.method
-    }, callback).end()
+    }, callback)
+    req.on('error', function(err) {
+        logger.log('Error on request', err)
+    })
+    req.end()
+
+
 }
 
 
@@ -55,9 +60,13 @@ network.prototype.postRequest = function(hostInfo, request, done) {
             path: request.url || '/',
             method: 'POST'
         }, callback)
+        req.on('error', function(err) {
+            logger.log('Error while sending request', err)
+        })
 
         data = checkType(data)
         req.write(data)
+
         req.end()
 
     }))
@@ -75,7 +84,6 @@ network.prototype.postRequest = function(hostInfo, request, done) {
             data = checkType(data)
             done({
                 body: data,
-                headers: response.headers,
                 statusCode: response.statusCode
             })
         }))

@@ -6,15 +6,14 @@ var health = new Health()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
 var genericUtility = require('./utilities/generic-utility')
-var RateLimter = require('./utilities/rate-limiter')
-var rateLimiter = new RateLimter()
 var PORT = config.port || 3001
 var server, http
 var router = require('./router')
 var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 
-if (config.multiCore && !process.env.NODE_ENV === 'test') {
+
+if (config.multiCore && process.env.NODE_ENV !== 'test') {
     if (cluster.isMaster) {
         for (var i = 0; i < numCPUs; i++) {
             // Create a worker
@@ -26,8 +25,8 @@ if (config.multiCore && !process.env.NODE_ENV === 'test') {
         }
         // restart if process dies
         cluster.on('exit', function(worker, code, signal) {
-            logger.log('Worker died, restarting. check error logs', worker)
-            logger.error('worker dead', worker, code, signal)
+            logger.log('Worker died, restarting. check error logs')
+            logger.error('worker dead', code, signal)
             cluster.fork()
         })
 

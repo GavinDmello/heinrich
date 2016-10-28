@@ -49,7 +49,7 @@ router.hitServers = function(request, cb) {
 function checkDownTime(serverHealth) {
     servers = serverHealth.upServers
 
-    var send = process.send || genericUtility.handleAction
+    var send = genericUtility.handleAction
 
     if (!firstServerCheck) {
         firstServerCheck = true
@@ -62,7 +62,8 @@ function checkDownTime(serverHealth) {
             noOfDownServers = serverHealth.downServers.length
             alreadyFlagged = false
             alreadyCheckDownTime = true
-            send({ type: 'downtime', health: serverHealth })
+            var msg = { type: 'downtime', health: serverHealth }
+            config.multiCore && process.env.NODE_ENV !== 'test' ? process.send(msg) : send(msg)
         }
     }
 
@@ -70,14 +71,17 @@ function checkDownTime(serverHealth) {
         alreadyFlagged = true
         alreadyCheckDownTime = false
         noOfDownServers = serverHealth.downServers.length
-        send({ type: 'reset', health: serverHealth })
+        var msg = { type: 'reset', health: serverHealth }
+        config.multiCore && process.env.NODE_ENV !== 'test' ? process.send(msg) : send(msg)
     }
 
     if (serverHealth.downServers.length !== noOfDownServers) {
         noOfDownServers = serverHealth.downServers.length
-        send({ type: 'healthchange', health: serverHealth })
+        var msg = { type: 'healthchange', health: serverHealth }
+        config.multiCore && process.env.NODE_ENV !== 'test' ? process.send(msg) : send(msg)
     }
 }
+
 
 
 module.exports = router
