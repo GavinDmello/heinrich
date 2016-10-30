@@ -1,4 +1,5 @@
 var http = require('http')
+http.globalAgent.maxSockets = 100000;
 var concat = require('concat-stream')
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
@@ -13,13 +14,8 @@ module.exports = network
 network.prototype.getRequest = function(hostInfo, request, done) {
 
     request.headers.host = hostInfo.host + ':' + hostInfo.port
-    
+
     callback = function(response) {
-        response.on('error', function(error) {
-            logger.error(error)
-            done({ statusCode: 404 })
-            return
-        })
 
         response.pipe(concat(function(data) {
             data = checkType(data)
@@ -30,18 +26,16 @@ network.prototype.getRequest = function(hostInfo, request, done) {
         }))
     }
 
-    var req = http.request({
+    var req = http.get({
         host: hostInfo.host,
         port: hostInfo.port,
         path: request.path || '/',
         headers: request.headers,
         method: request.method
-    }, callback)
-    req.on('error', function(err) {
-        logger.log('Error on request', err)
+    }, callback).on('error', function(err) {
+        logger.error('Error on get request', err)
+        handleError(err, callback)
     })
-    req.end()
-
 
 }
 
@@ -62,19 +56,15 @@ network.prototype.postRequest = function(hostInfo, request, done) {
         }, callback)
         req.on('error', function(err) {
             logger.log('Error while sending request', err)
+            handleError(err, callback)
         })
 
         data = checkType(data)
         req.write(data)
-
         req.end()
 
     }))
     callback = function(response) {
-        response.on('error', function(error) {
-            logger.error(error)
-            done({ statusCode: 404 })
-        })
 
         if (limitBandwidth.downStream) {
             response = throttleStream(response, limitBandwidth.downStream)
@@ -107,6 +97,21 @@ function checkType(data) {
         data = data.toString()
     }
     return data
+}
+
+function handleError(err, callback) {
+    if (err.code === 'ETIMEDOUT') {
+        if (err.syscall === 'connect') {
+            callback({
+                statusCode: 503
+            })
+        } else {
+            callback({
+                statusCode: 404
+            })
+        }
+        return
+    }
 }
 
 function throttleStream(stream, rate) {
