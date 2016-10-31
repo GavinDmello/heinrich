@@ -4,7 +4,8 @@ var http = require('http')
 var Network = require('./network')
 var network = new Network()
 var strategies = require('./strategies')
-var serverListener = require('./health').eventListener
+var Health = require('./health')
+var health = new Health()
 var servers = []
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
@@ -15,7 +16,8 @@ var alreadyFlagged = alreadyCheckDownTime = firstServerCheck = false
 var noOfDownServers = 0
 var nextTick = process.nextTick
 
-serverListener.on('health', checkDownTime)
+health.on('health', checkDownTime)
+health.ping()
 
 router.hitServers = function(request, cb) {
     request.servers = servers
@@ -25,11 +27,11 @@ router.hitServers = function(request, cb) {
         })
         return
     }
-
     if (servers.length === 0) {
         cb({ statusCode: 503 })
         return
     }
+
 
     switch (config.mode) {
         case 1:
@@ -47,6 +49,11 @@ router.hitServers = function(request, cb) {
 }
 
 function checkDownTime(serverHealth) {
+    
+    if ((config.multiCore && process.env.NODE_ENV !== 'test') && !process.send){
+        setTimeout(checkDownTime, serverHealth, 1000)
+        return
+    }
     servers = serverHealth.upServers
 
     var send = genericUtility.handleAction

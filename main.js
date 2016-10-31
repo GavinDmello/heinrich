@@ -1,8 +1,6 @@
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 var config = require('./config.json')
-var Health = require('./health').health
-var health = new Health()
 var loggerUtility = require('./utilities/logger')
 var logger = new loggerUtility()
 var genericUtility = require('./utilities/generic-utility')
@@ -41,7 +39,6 @@ if (config.multiCore && process.env.NODE_ENV !== 'test') {
 }
 
 function serverInit(opts) {
-    health.ping()
 
     function handleAnyRequest(request, response) {
         if (config.requestTimeout) {

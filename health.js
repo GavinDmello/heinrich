@@ -1,8 +1,8 @@
 var servers = require('./config.json').servers
 var pingInterval = require('./config').pingInterval || 1000
 var async = require('async')
+var inherits = require('util').inherits
 var EE = require('events').EventEmitter
-var serverTransmitter = new EE()
 var tcpp = require('tcp-ping')
 var downServers = []
 var loggerUtility = require('./utilities/logger')
@@ -21,9 +21,14 @@ if (servers.length === 0) {
     return
 }
 
-module.exports = { eventListener: serverTransmitter, health: health }
 
-function health() {}
+module.exports = health
+
+function health() {
+    EE.call(this)
+}
+
+inherits(health, EE)
 
 health.prototype.ping = function() {
     var that = this
@@ -31,7 +36,7 @@ health.prototype.ping = function() {
     async.map(servers, getServerHealth, function(err, result) {
         if (!err) {
             result = result.filter(Boolean)
-            serverTransmitter.emit('health', {
+            that.emit('health', {
                 upServers: result,
                 downServers: downServers
             })
