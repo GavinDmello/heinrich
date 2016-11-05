@@ -8,7 +8,7 @@ var PORT = config.port || 3001
 var server, http
 var router = require('./lib/router')
 var RateLimiter = require('./lib/rate-limiter')
-var rateLimiter = new RateLimiter()
+var rateLimiter
 var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 
@@ -69,6 +69,7 @@ function serverInit(opts) {
 
         var rateLimitedRoutes = config.rateLimit.rateLimitedRoutes
         if (rateLimitedRoutes && rateLimitedRoutes.indexOf(request.url) > -1) {
+            if (!rateLimiter) rateLimiter = new RateLimiter()
             var clientHash = clientIp + request.url
             rateLimiter.checkRequestForRate({
                 clientHash: clientHash,
