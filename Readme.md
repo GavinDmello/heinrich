@@ -101,6 +101,16 @@ Here the `rateLimitedRoutes` property is an array of strings and `rateLimitInter
         "rateLimitInterval" : 1000
     }
 ```
+In case if you want to run the server in multi core more and use rate limiting , you will have to plug in Redis.
+Example config for the server in multi core mode with rate limiting
+```json
+    "rateLimit": {
+        "host":"0.0.0.0",
+        "port": 6379,
+        "rateLimitedRoutes" : ["/signup", "/register"],
+        "rateLimitInterval" : 1000
+    }
+```
 
 #### key
 This will have the absolute address of the key
