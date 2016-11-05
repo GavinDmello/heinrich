@@ -1,4 +1,4 @@
-var Network = require('../network')
+var Network = require('../lib/network')
 var network = new Network()
 var allServers = require('../config.json').servers
 var async = require('async')

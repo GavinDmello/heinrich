@@ -6,7 +6,7 @@ var logger = new loggerUtility()
 var genericUtility = require('./utilities/generic-utility')
 var PORT = config.port || 3001
 var server, http
-var router = require('./router')
+var router = require('./lib/router')
 var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 

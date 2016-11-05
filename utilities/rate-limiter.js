@@ -4,7 +4,9 @@ var config = require('../config.json')
 var rateLimitInterval = config.rateLimit ? (config.rateLimit.rateLimitInterval || 1000) : 1000
 var rateLimiter = function() {}
 
-
+db.on('error', function(error){
+    console.log(error)
+})
 
 module.exports = rateLimiter
 

@@ -8,10 +8,6 @@
     "requestTimeout": 10,
     "https": false,
     "multiCore": true,
-    "limitBandwidth": {
-        "upStream": 10,
-        "downStream": 10
-    },
     "key": "",
     "cert": ""
 }
