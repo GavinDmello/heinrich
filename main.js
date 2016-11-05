@@ -7,6 +7,8 @@ var genericUtility = require('./utilities/generic-utility')
 var PORT = config.port || 3001
 var server, http
 var router = require('./lib/router')
+var RateLimiter = require('./lib/rate-limiter')
+var rateLimiter = new RateLimiter()
 var nextTick = process.nextTick
 cluster.schedulingPolicy = cluster.SCHED_RR
 
@@ -119,6 +121,7 @@ function serverInit(opts) {
     function rateLimitResponse(params) {
         var request = params.request
         var response = params.response
+
         if (params.forward) {
             forwardRequest(request, response)
         } else {
