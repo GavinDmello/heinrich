@@ -6,7 +6,7 @@ var logger = new loggerUtility()
 
 function redisClass() {
 
-    if (!rateLimitConfig.host || !rateLimitConfig.port)) {
+    if (!rateLimitConfig.host || !rateLimitConfig.port) {
     	throw new Error('External host or port not set in the config for rateLimiting')
     }
     this.redis = new Redis(rateLimitConfig.port, rateLimitConfig.host)
