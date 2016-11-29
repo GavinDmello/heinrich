@@ -1,4 +1,6 @@
-var Network = require('../lib/network')
+var Pfade = require('pfade')
+var pfade = new Pfade()
+var Network = pfade.require('lib/network')
 var network = new Network()
 
 function roundRobin() {

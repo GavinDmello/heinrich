@@ -1,9 +1,11 @@
-var config = require('../config')
+var Pfade = require('pfade')
+var pfade = new Pfade()
+var config = pfade.require('config')
 var nodemailer = require('nodemailer')
 var smtpTransport = require('nodemailer-smtp-transport')
 var async = require('async')
 var nextTick = process.nextTick
-var loggerUtility = require('./logger')
+var loggerUtility = pfade.require('utilities/logger')
 var logger = new loggerUtility()
 var serverOptions = {}
 var smtpConfig = config.reporting

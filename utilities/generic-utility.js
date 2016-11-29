@@ -1,12 +1,14 @@
-var config = require('../config.json')
+var Pfade = require('pfade')
+var pfade = new Pfade()
+var config = pfade.require('config.json')
 var analytics, mailer
 if (config.analytics) {
-    var analyticClass = require('./analysis')
+    var analyticClass = pfade.require('utilities/analysis')
     analytics = new analyticClass()
 }
 
 if (config.reporting) {
-    var mailerUtilty = require('./mailer')
+    var mailerUtilty = pfade.require('utilities/mailer')
     mailer = new mailerUtilty()
 }
 

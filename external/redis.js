@@ -1,7 +1,9 @@
+var Pfade = require('pfade')
+var pfade = new Pfade()
 var Redis = require('ioredis')
-var config = require('../config.json')
+var config = pfade.require('config.json')
 var rateLimitConfig = config.rateLimit
-var loggerUtility = require('../utilities/logger')
+var loggerUtility = pfade.require('utilities/logger')
 var logger = new loggerUtility()
 
 function redisClass() {

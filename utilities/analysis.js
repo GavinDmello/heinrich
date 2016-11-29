@@ -1,5 +1,7 @@
-var config = require('../config.json')
-var loggerUtility = require('./logger')
+var Pfade = require('pfade')
+var pfade = new Pfade()
+var config = pfade.require('config.json')
+var loggerUtility = pfade.require('utilities/logger')
 var logger = new loggerUtility()
 var socket, socketHost
 

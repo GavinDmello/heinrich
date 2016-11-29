@@ -1,15 +1,18 @@
+var Pfade = require('pfade')
+var pfade = new Pfade(__dirname)
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
-var config = require('./config.json')
-var loggerUtility = require('./utilities/logger')
+var config = pfade.require('config.json')
+var loggerUtility = pfade.require('utilities/logger')
 var logger = new loggerUtility()
-var genericUtility = require('./utilities/generic-utility')
+var genericUtility = pfade.require('utilities/generic-utility')
 var PORT = config.port || 3001
-var server, http
-var router = require('./lib/router')
-var RateLimiter = require('./lib/rate-limiter')
+var router = pfade.require('lib/router')
+var RateLimiter = pfade.require('lib/rate-limiter')
 var rateLimiter
 var nextTick = process.nextTick
+var server, http
+
 cluster.schedulingPolicy = cluster.SCHED_RR
 
 
