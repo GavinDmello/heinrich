@@ -1,8 +1,6 @@
-var Pfade = require('pfade')
-var pfade = new Pfade()
-var Network = pfade.require('lib/network')
+var Network = require('../lib/network')
 var network = new Network()
-var allServers = pfade.require('config.json').servers
+var allServers = require('../config.json').servers
 var async = require('async')
 
 function leastConnections() {

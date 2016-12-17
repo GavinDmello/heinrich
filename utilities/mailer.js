@@ -54,7 +54,7 @@ mailer.prototype.sendDownTimeMail = function(params) {
         to: config.reporting.receipients,
         subject: "Server Down",
         text: this.getText(params.downServers)
-    }, function(error, response) {
+    }, function smtpTransportResponse(error, response) {
         if (error) {
             logger.error(error)
 

@@ -29,7 +29,7 @@
     "nodemailer": "^2.6.4",
     "nodemailer-smtp-transport": "^2.7.2",
     "pfade": "^0.3.0",
-    "socket.io-client": "^1.5.0",
+    "socket.io": "^1.7.1",
     "stream-throttle": "^0.1.3",
     "tcp-ping": "^0.1.1"
   },

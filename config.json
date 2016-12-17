@@ -8,6 +8,9 @@
     "requestTimeout": 10,
     "https": false,
     "multiCore": true,
+    "analytics": {
+        "port": 4200
+    },
     "key": "",
     "cert": ""
 }
