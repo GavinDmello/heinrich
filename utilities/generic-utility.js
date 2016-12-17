@@ -69,6 +69,9 @@ genericUtility.handleAction = function(data) {
 }
 
 genericUtility.decider = function(msg) {
+    if (process.env.NODE_ENV === 'test' ) {
+        return
+    }
 
     // parent process will directly send
     if (!process.send) {
@@ -76,6 +79,6 @@ genericUtility.decider = function(msg) {
     }
 
     // if message  has to be sent, it will be sent
-    config.multiCore && process.env.NODE_ENV !== 'test' ? process.send(msg) : this.handleAction(msg)
+    config.multiCore ? process.send(msg) : this.handleAction(msg)
 
 }
