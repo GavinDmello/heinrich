@@ -11,6 +11,7 @@ var serverOptions = {}
 var smtpConfig = config.reporting
 var mailSent = false
 var nextTick = process.nextTick
+var emailSent = {}
 
 function mailer() {}
 
@@ -45,46 +46,51 @@ if (smtpConfig.secure) {
 var smtpTransport = nodemailer.createTransport(smtpTransport(serverOptions))
 
 mailer.prototype.sendDownTimeMail = function(params) {
-    if (mailSent) {
+    var mailMessage = this.getText(params.downServers)
+
+    if (!mailMessage) {
         return
     }
-    mailSent = true
+
     smtpTransport.sendMail({
         from: config.reporting.email,
         to: config.reporting.receipients,
         subject: "Server Down",
-        text: this.getText(params.downServers)
-    }, function smtpTransportResponse(error, response) {
+        text: mailMessage
+    }, smtpTransportResponse)
+
+    function smtpTransportResponse(error, response) {
         if (error) {
             logger.error(error)
 
-        } else {
-            that = null
         }
-    })
+    }
 
 }
 
 mailer.prototype.getText = function(servers) {
+    var flag = false
     var serverString = "The following server(s) went down \n"
+
     for (var i = 0; i < servers.length; i++) {
-        serverString += "host : " + servers[i].host + " port: " + servers[i].port + '\n'
+
+        if (!emailSent[servers[i].host + servers[i].port]) {
+            serverString += "host : " + servers[i].host + " port: " + servers[i].port + '\n'
+            emailSent[servers[i].host + servers[i].port] = true
+            flag = true
+        }
     }
     serverString += "The following message was sent by heinrich"
-    return serverString
+    return flag ? serverString : undefined
 }
 
 mailer.prototype.resetFlag = function() {
-    mailSent = false
-}
+    var serverKeys = Object.keys(emailSent)
+    for (var i = 0; i < serverKeys.length; i++) {
 
-mailer.prototype.handleAction = function(msg) {
-    console.log(this)
-    if (msg.type === 'downtime') {
-        that.sendDownTimeMail({ downServers: msg.health.downServers })
-    }
-    if (msg.type === 'reset') {
-        this.resetFlag()
+        if (emailSent[serverKeys[i]]) {
+            emailSent[serverKeys[i]] = false
+        }
     }
 }
 
