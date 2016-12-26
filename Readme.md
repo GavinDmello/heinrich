@@ -119,6 +119,17 @@ This will have the absolute address of the key
 This will have the absolute address of the certificate.
 
 -------------------------------------------------------
+### Dashboard
+You can go to http://localhost:4200/
+default username: test
+default password : test@123
+
+![Screenshot](https://github.com/GavinDmello/heinrich/blob/master/dashboard/img/1.png)
+![Screenshot](https://github.com/GavinDmello/heinrich/blob/master/dashboard/img/2.png)
+
+Few metric are being tracked as of now
+
+-------------------------------------------------------
 ### Project roadmap :-
 
 - [x] random routing
@@ -132,8 +143,8 @@ This will have the absolute address of the certificate.
 - [x] email reporting about downtime
 - [x] bandwidth limiting for upstream & downstream components
 - [x] rate limiting
-- [ ] analytics
-- [ ] dashboard
+- [x] analytics
+- [x] simple dashboard
 - [ ] external cache
 - [ ] unit test cases
 - [ ] request queuing

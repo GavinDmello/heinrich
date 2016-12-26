@@ -157,6 +157,7 @@ function handleAnalytics() {
     if (config.analytics && config.analytics.port) {
         socketServer.startServer({
             pid: pid,
+            processes: numCPUs,
             timeStamp: Date.now(),
             version: pfade.require('package.json').version
         })
