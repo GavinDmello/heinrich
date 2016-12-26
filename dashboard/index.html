@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Heinrich</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="./socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <style type="text/css">
+    #pad {
+        margin-bottom: 20px
+    }
+
+    .panel-footer-custom {
+        bottom: -50px;
+        height: 50px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        text-align: center
+    }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1>Heinrich</h1>
+        <p>A fast reverse proxy which scales</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <form class="form-signin" method="post" action="/main">
+                        <input id="pad" type="text" class="form-control" placeholder="Username" name="username" required autofocus>
+                        <input id="pad" type="password" class="form-control" placeholder="Password" name="password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">
+                            Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer panel-footer-custom">Copyright @GavinDmello</div>
+</body>
+<script>
+</script>
+
+</html>

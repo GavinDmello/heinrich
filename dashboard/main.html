@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Heinrich</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="./socket.io.js"></script>
+    <style type="text/css">
+    #health,
+    #processes,
+    #requests {
+        font-size: 750%
+    }
+
+    #div-slash {
+        float: left;
+        margin-right: 20%;
+    }
+
+    .init {
+        margin-left: 100px
+    }
+
+    .panel-footer-custom {
+        bottom: -50px;
+        height: 50px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        text-align: center
+    }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1>Heinrich</h1>
+        <p>A fast reverse proxy which scales</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div id="div-slash" class="card init">
+                <div class="card-block">
+                    <h3 class="card-title">Processes</h3>
+                    <p id="processes">0</p>
+                </div>
+            </div>
+            <div id="div-slash" class="card">
+                <div class="card-block">
+                    <h3 class="card-title">Requests Active</h3>
+                    <p id="requests">0</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-block">
+                    <h3 class="card-title"> Servers Up</h3>
+                    <p id="health">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer panel-footer-custom">Copyright @GavinDmello</div>
+</body>
+<script>
+var totalRequests = 0
+var socket = io.connect('http://localhost:4200')
+socket.on('serverInfo', function(data) {
+    document.getElementById("processes").innerHTML = data.processes
+})
+socket.on('health', function(data) {
+    var upServers = data.health.upServers.length
+    var downServers = data.health.downServers.length
+    var totalServers = upServers + downServers
+    console.log(data)
+    document.getElementById("health").innerHTML = upServers
+})
+socket.on('requestInfo', function(data) {
+    for (key in data) {
+        totalRequests += data[key]
+    }
+    document.getElementById("requests").innerHTML = totalRequests
+    totalRequests = 0
+
+})
+</script>
+
+</html>
