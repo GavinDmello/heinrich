@@ -121,8 +121,8 @@ This will have the absolute address of the certificate.
 -------------------------------------------------------
 ### Dashboard
 You can go to http://localhost:4200/
-default username: test
-default password : test@123
+`default username` : test
+`default password` : test@123
 
 ![Screenshot](https://github.com/GavinDmello/heinrich/blob/master/dashboard/img/1.png)
 ![Screenshot](https://github.com/GavinDmello/heinrich/blob/master/dashboard/img/2.png)
