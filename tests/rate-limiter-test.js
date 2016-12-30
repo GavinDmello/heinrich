@@ -1,3 +1,9 @@
+/*
+ * Heinrich - Reverse proxy
+ * Copyright(c) 2016-present @GavinDmello
+ * BSD Licensed
+ */
+
 process.env.NODE_ENV = 'test';
 var Pfade = require('pfade')
 var helper = require('./helper')

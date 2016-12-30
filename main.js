@@ -1,3 +1,9 @@
+/*
+ * Heinrich - Reverse proxy
+ * Copyright(c) 2016-present @GavinDmello
+ * BSD Licensed
+ */
+
 var Pfade = require('pfade')
 var pfade = new Pfade(__dirname)
 var cluster = require('cluster')

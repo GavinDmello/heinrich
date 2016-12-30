@@ -1,3 +1,9 @@
+/*
+ * Heinrich - Reverse proxy
+ * Copyright(c) 2016-present @GavinDmello
+ * BSD Licensed
+ */
+
 var Network = require('../lib/network')
 var network = new Network()
 var allServers = require('../config.json').servers

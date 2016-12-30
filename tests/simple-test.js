@@ -1,3 +1,9 @@
+/*
+ * Heinrich - Reverse proxy
+ * Copyright(c) 2017-present @GavinDmello
+ * BSD Licensed
+ */
+
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 

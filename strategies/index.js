@@ -1,3 +1,9 @@
+/*
+ * Heinrich - Reverse proxy
+ * Copyright(c) 2016-present @GavinDmello
+ * BSD Licensed
+ */
+
 var randomRouterClass = require('./random')
 var randomRouter = new randomRouterClass()
 var leastConnectionsRouterClass = require('./least-connections')
