@@ -1,6 +1,6 @@
 /*
  * Heinrich - Reverse proxy
- * Copyright(c) 2017-present @GavinDmello
+ * Copyright(c) 2016-present @GavinDmello
  * BSD Licensed
  */
 
