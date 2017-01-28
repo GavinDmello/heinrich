@@ -38,10 +38,10 @@ leastConnections.prototype.hitLeastConnections = function hitLeastConnections(re
         }
 
         that._serverConnections[selectedServer.minifiedServerString]++
-        network.sendRequest(hostInfo, request, function(response) {
-            that._serverConnections[selectedServer.minifiedServerString]--
-            cb(response)
-        })
+            network.sendRequest(hostInfo, request, function(response) {
+                that._serverConnections[selectedServer.minifiedServerString]--
+                    cb(response)
+            })
     })
 
 }
@@ -51,7 +51,9 @@ leastConnections.prototype.selectLeastActive = function selectLeastActive(online
     var min
     var selectedServer = {}
 
-    async.each(onlineServers, function(_server, servercallback) {
+    async.each(onlineServers, getLeastActive, getSelectedServer)
+
+    function getLeastActive(_server, servercallback) {
         var minifiedServerString = _server.host + _server.port.toString()
         if (!min || (that._serverConnections[minifiedServerString] < min)) {
             selectedServer.host = _server.host
@@ -60,8 +62,10 @@ leastConnections.prototype.selectLeastActive = function selectLeastActive(online
             min = that._serverConnections[minifiedServerString]
         }
         servercallback()
-    }, function(err) {
+    }
+
+    function getSelectedServer() {
         cb(selectedServer)
         selectedServer = that = null
-    })
+    }
 }
