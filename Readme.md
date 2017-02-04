@@ -1,6 +1,6 @@
 # Heinrich  &nbsp;&nbsp;[![Build Status](https://travis-ci.org/GavinDmello/heinrich.svg?branch=master)](https://travis-ci.org/GavinDmello/heinrich.svg?branch=master)&nbsp;
 
-A lightweight load-balancer written in Node.js which is highly available. It's made using the Reactor pattern in Node along with support for worker processes (one per core). You can however run a simple load-balancer with a single process by disabling the multiCore feature.
+A load-balancer written in Node.js which is highly available. It's made using the Reactor pattern in Node along with support for worker processes (one per core). You can however run a simple load-balancer with a single process by disabling the multiCore feature.
 
 The load-balancer is programmed for high availability i.e if the worker process gets killed, it will be restarted. This ensures that the load on the other processes doesn't increase substantially.
 
