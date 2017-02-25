@@ -5,18 +5,28 @@
  */
 
 //During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test'
 
 //Requiring the dev-dependencies
-var request = require('supertest');
-var server = require('../main');
+var request = require('supertest')
+var testConfig = require('./test-config.json')
 
 describe('testing status codes', () => {
+    var server
+    var originalCache = require('../config.json')
     beforeEach((done) => {
+        var resolved = require('path').resolve('./config.json')
+        require.cache[resolved] = {
+            id: resolved,
+            filename: resolved,
+            loaded: true,
+            exports: testConfig
+        }
+        server = require('../main')
         if (server) {
             done()
         }
-    });
+    })
 
     it('status code 405', (done) => {
         request(server)
@@ -53,7 +63,6 @@ describe('testing status codes', () => {
             .post('/status/500')
             .send("hi")
             .expect(500, done)
-
     })
 
 })

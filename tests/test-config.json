@@ -1,0 +1,19 @@
+{
+    "port": 8080,
+    "pingInterval": 1000,
+    "servers": [{
+        "host": "httpbin.org",
+        "port": 80
+    }],
+    "mode": 1,
+    "blackListAddress": [],
+    "blockedUserAgent": [],
+    "requestTimeout": 10,
+    "https": false,
+    "multiCore": false,
+    "analytics": {
+        "port": 4200
+    },
+    "key": "",
+    "cert": ""
+}

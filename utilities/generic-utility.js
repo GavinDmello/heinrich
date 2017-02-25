@@ -75,9 +75,6 @@ genericUtility.handleAction = function(data) {
 }
 
 genericUtility.decider = function(msg) {
-    if (process.env.NODE_ENV === 'test' ) {
-        return
-    }
 
     // parent process will directly send
     if (!process.send) {

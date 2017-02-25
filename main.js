@@ -8,7 +8,7 @@ var Pfade = require('pfade')
 var pfade = new Pfade(__dirname)
 var cluster = require('cluster')
 var numCPUs = require('os').cpus().length;
-var config = pfade.require('config.json')
+var config = pfade.require('./config.json')
 var loggerUtility = pfade.require('utilities/logger')
 var logger = new loggerUtility()
 var genericUtility = pfade.require('utilities/generic-utility')
@@ -24,7 +24,7 @@ var server, http
 
 cluster.schedulingPolicy = cluster.SCHED_RR
 
-if (config.multiCore && process.env.NODE_ENV !== 'test') {
+if (config.multiCore) {
     if (cluster.isMaster) {
         for (var i = 0; i < numCPUs; i++) {
             // Create a worker
@@ -55,7 +55,7 @@ if (config.multiCore && process.env.NODE_ENV !== 'test') {
 // Initializing the server
 function serverInit(opts) {
 
-    if(!opts.clusterId) handleAnalytics()
+    if (!opts.clusterId) handleAnalytics()
 
     // request handler
     function handleAnyRequest(request, response) {
