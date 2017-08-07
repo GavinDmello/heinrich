@@ -37,6 +37,7 @@ describe('testing status codes', () => {
     it('status code 200', (done) => {
         request(server)
             .post('/status/200')
+            .set('content-length', "hi".length)
             .send("hi")
             .expect(200, done)
 
@@ -45,6 +46,7 @@ describe('testing status codes', () => {
     it('status code 500', (done) => {
         request(server)
             .post('/status/500')
+            .set('Content-Length', "hi".length)
             .send("hi")
             .expect(500, done)
 
@@ -53,6 +55,7 @@ describe('testing status codes', () => {
     it('status code 404', (done) => {
         request(server)
             .post('/status/500')
+            .set('Content-Length', "hi".length)
             .send("hi")
             .expect(500, done)
 
@@ -61,6 +64,7 @@ describe('testing status codes', () => {
     it('status code 503', (done) => {
         request(server)
             .post('/status/500')
+            .set('Content-Length', "hi".length)
             .send("hi")
             .expect(500, done)
     })

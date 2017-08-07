@@ -6,7 +6,8 @@ The load-balancer is programmed for high availability i.e if the worker process 
 
 You can also configure an smtp server with `heinrich`. Mails will be sent whenever one or more of the backend servers go down.
 
-Currently you'll have to clone the project & run the main file. I'll be writing installation & startup scripts for ubuntu & centos servers.
+Currently you'll have to clone the project & run the main file. I'll be writing installation & startup scripts for ubuntu & centos servers. Also, we currently support only GET
+& POST methods.
 
 -------------------------------------------------------
 ### Configuration file :-
