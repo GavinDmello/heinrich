@@ -6,7 +6,7 @@
         "port": 80
     }],
     "mode": 1,
-    "blackListAddress": [],
+    "blackListAddress": ["192.168.2.1"],
     "blockedUserAgent": [],
     "requestTimeout": 10,
     "https": false,

@@ -21,6 +21,7 @@ var rateLimiter
 var nextTick = process.nextTick
 var pid = process.pid
 var server, http
+var regexForIPV6 = /^.*:/
 
 cluster.schedulingPolicy = cluster.SCHED_RR
 
@@ -67,6 +68,8 @@ function serverInit(opts) {
             request.connection.remoteAddress ||
             request.socket.remoteAddress ||
             request.connection.socket.remoteAddress
+
+        clientIp = clientIp.replace(regexForIPV6, '')
 
         var clientAddressIndex = config.blackListAddress.indexOf(clientIp)
         var userAgent = request.headers['user-agent']

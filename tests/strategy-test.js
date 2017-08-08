@@ -17,7 +17,7 @@ var leastConn = strategies.leastConnectionsRouter
 var chai = require('chai')
 var expect = chai.expect
 
-describe('testing status codes', () => {
+describe('testing strategies', () => {
 
     it('random selection test', (done) => {
         expect(random.chooseRandomServer(1, 10)).to.be.number
