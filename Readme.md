@@ -56,6 +56,9 @@ If you figure out an client IP address which was trying a DOS attack. You can ex
 #### blockedUserAgent
 According a user study, most of pseudo traffic usually comes from a clients having in-appropriate user-agents. The blockUserAgent is list of all the user agents you can block. The user agent should be in string format. The client requesting with these user agents will get 500 response code.
 
+#### concurrency
+This should be a number. It defines how many sockets should be open per origin
+
 #### requestTimeout
 This is counter against the `slowloris` attack. This could also happen if the clients are slow. Defense against such a situation would be to decide on a timeout value.If the request doesn't complete in the given timeout value, the client connection will be closed. Deciding on an optimum value here would be challenge. If this property is not provided then the load balancer would be susceptible to a possible DOS attack.
 
