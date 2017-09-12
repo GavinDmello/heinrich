@@ -19,7 +19,7 @@ Example :-
 {
     "port" : 8080,
     "pingInterval" : 2000,
-    "servers" : [{ "host": "127.0.0.1", "port":8090},{"host": "127.0.0.1", "port": 9000}],
+    "servers" : [{ "host": "127.0.0.1", "port":8090, "https" : true},{"host": "127.0.0.1", "port": 9000}],
     "mode" : 1,
     "blackListAddress": ["1.2.3.4"],
     "blockedUserAgent":[],
@@ -40,7 +40,7 @@ The port on which your load-balancer will run. The worker processes will share t
 The interval at which the load-balancer will ping the list of underlying  servers. The number needs to be provided in milli seconds .The default is 1000 milli seconds.
 
 #### servers
-It's a list of servers on which the load-balancing will be conducted. The servers should be provided in a array of objects. Also ensure that the port is provided for all the hosts.
+It's a list of servers on which the load-balancing will be conducted. The servers should be provided in a array of objects. Also ensure that the port is provided for all the hosts. You can also specify an https property for https backend servers.
 
 #### mode
 There are three modes supported as of now.
@@ -149,6 +149,7 @@ Few metric are being tracked as of now
 - [x] rate limiting
 - [x] analytics
 - [x] simple dashboard
+- [x] SSL termination
 - [ ] external cache
 - [ ] unit test cases
 - [ ] request queuing
