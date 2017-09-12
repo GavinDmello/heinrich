@@ -30,6 +30,7 @@ describe('outstream SSL test', () => {
 
     it('Get test for outstream', (done) => {
         testConfig.servers.host = 'https://httpbin.org'
+        testConfig.servers.https = true
         request(server)
             .get('/')
             .expect(200, done)
@@ -37,6 +38,7 @@ describe('outstream SSL test', () => {
 
     it('post test for outstream', (done) => {
         testConfig.servers.host = 'https://httpbin.org'
+        testConfig.servers.https = true
         request(server)
             .post('/status/200')
             .send("hi")
