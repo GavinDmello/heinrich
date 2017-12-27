@@ -2,7 +2,7 @@
 
 A load-balancer written in Node.js which is highly available. It's made using the Reactor pattern in Node along with support for worker processes (one per core). You can however run a simple load-balancer with a single process by disabling the multiCore feature.
 
-The load-balancer is programmed for high availability i.e if the worker process gets killed, it will be restarted. This ensures that the load on the other processes doesn't increase substantially.
+The load is shared evenly amongs all processes and if the worker process dies for some reason, a new worker process replaces it.
 
 You can also configure an smtp server with `heinrich`. Mails will be sent whenever one or more of the backend servers go down.
 
@@ -160,3 +160,7 @@ Few metric are being tracked as of now
 ### LICENSE
 
 BSD
+
+### Donations
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VS8NH7X3FQJXA)
