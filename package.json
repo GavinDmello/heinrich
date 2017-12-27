@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/GavinDmello/heinrich#readme",
   "dependencies": {
+    "ascii-art": "^1.4.2",
     "async": "^2.0.1",
     "body-parser": "^1.15.2",
     "concat-stream": "^1.5.2",

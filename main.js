@@ -17,6 +17,7 @@ var router = pfade.require('lib/router')
 var SocketServer = pfade.require('lib/socket-server')
 var socketServer = new SocketServer()
 var RateLimiter = pfade.require('lib/rate-limiter')
+var showArt = pfade.require('lib/art')
 var rateLimiter
 var nextTick = process.nextTick
 var pid = process.pid
@@ -34,22 +35,30 @@ if (config.multiCore) {
 
         }
 
+        showArt()
         handleAnalytics()
 
         // restart if process dies
-        cluster.on('exit', function(worker, code, signal) {
+        cluster.on('exit', function exitCode(worker, code, signal) {
             logger.log('Worker died, restarting. check error logs')
             logger.error('worker dead', code, signal)
             cluster.fork()
         })
 
-        logger.log('starting server in multi core mode!')
-        logger.log('creating', numCPUs, ' processes')
+        setTimeout(function() {
+            logger.log('starting server in multi core mode!')
+            logger.log('creating', numCPUs, ' processes')
+        }, 1000)
+
     } else {
         serverInit({ clusterId: cluster.worker.id })
     }
 } else {
-    logger.log('starting server without worker processes')
+    showArt()
+    setTimeout(function() {
+        logger.log('starting server without worker processes')
+    }, 1000)
+    
     serverInit({}) // No cluster present so no Id
 }
 

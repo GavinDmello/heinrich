@@ -7,7 +7,7 @@
     "blockedUserAgent": [],
     "requestTimeout": 10,
     "https": false,
-    "multiCore": true,
+    "multiCore": false,
     "analytics": {
         "port": 4200
     },
