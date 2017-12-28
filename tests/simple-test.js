@@ -11,7 +11,7 @@ process.env.NODE_ENV = 'test'
 var request = require('supertest')
 var testConfig = require('./test-config.json')
 
-describe('simple tests', () => {
+describe('method tests', () => {
     var server
     var originalCache = require('../config.json')
     beforeEach((done) => {
@@ -37,6 +37,22 @@ describe('simple tests', () => {
     it('basic post request', (done) => {
         request(server)
             .post('/status/200')
+            .send("hi")
+            .expect(200, done)
+
+    })    
+
+    it('basic put request', (done) => {
+        request(server)
+            .put('/status/200')
+            .send("hi")
+            .expect(200, done)
+
+    })
+
+    it('basic delete request', (done) => {
+        request(server)
+            .delete('/status/200')
             .send("hi")
             .expect(200, done)
 
