@@ -36,7 +36,7 @@ if (config.multiCore) {
         }
 
         showArt()
-        handleAnalytics()
+        handleAnalytics(numCPUs)
 
         // restart if process dies
         cluster.on('exit', function exitCode(worker, code, signal) {
@@ -55,6 +55,7 @@ if (config.multiCore) {
     }
 } else {
     showArt()
+    handleAnalytics(1)
     setTimeout(function() {
         logger.log('starting server without worker processes')
     }, 1000)
@@ -64,8 +65,6 @@ if (config.multiCore) {
 
 // Initializing the server
 function serverInit(opts) {
-
-    if (!opts.clusterId) handleAnalytics()
 
     // request handler
     function handleAnyRequest(request, response) {
@@ -171,11 +170,11 @@ function handleAction(msg) {
 }
 
 // handle analytics
-function handleAnalytics() {
+function handleAnalytics(processes) {
     if (config.analytics && config.analytics.port) {
         socketServer.startServer({
             pid: pid,
-            processes: numCPUs,
+            processes: processes,
             timeStamp: Date.now(),
             version: pfade.require('package.json').version
         })

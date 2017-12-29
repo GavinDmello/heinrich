@@ -27,7 +27,9 @@ genericUtility.handleAction = function(data) {
         case 'downtime':
             // send down time mail
             if (mailer) {
-                mailer.sendDownTimeMail({ downServers: data.health.downServers })
+                mailer.sendDownTimeMail({ 
+                    downServers: data.health.downServers 
+                })
             }
 
             // send analytics
@@ -80,7 +82,7 @@ genericUtility.decider = function(msg) {
     if (!process.send) {
         process.send = this.handleAction
     }
-
+    
     // if message  has to be sent, it will be sent
     config.multiCore ? process.send(msg) : this.handleAction(msg)
 
