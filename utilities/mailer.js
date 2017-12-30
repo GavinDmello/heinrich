@@ -8,7 +8,7 @@ var Pfade = require('pfade')
 var pfade = new Pfade()
 var config = pfade.require('config')
 var nodemailer = require('nodemailer')
-var smtpTransport = require('nodemailer-smtp-transport')
+var smtpTransportMod = require('nodemailer-smtp-transport')
 var async = require('async')
 var nextTick = process.nextTick
 var loggerUtility = pfade.require('utilities/logger')
@@ -19,37 +19,38 @@ var mailSent = false
 var nextTick = process.nextTick
 var emailSent = {}
 
-function mailer() {}
+function mailer() {
 
-if (!smtpConfig.user || !smtpConfig.pass) {
-    throw new Error("Email or password not provided")
-    return
-}
+    if (!smtpConfig.user || !smtpConfig.pass) {
+        throw new Error("Email or password not provided")
+        return
+    }
 
-if (smtpConfig.receipients.length === 0) {
-    throw new Error('No receipients provided')
-    return
-}
+    if (smtpConfig.receipients.length === 0) {
+        throw new Error('No receipients provided')
+        return
+    }
 
-if (smtpConfig.secure) {
-    serverOptions = {
-        host: smtpConfig.host,
-        port: smtpConfig.port,
-        secure: smtpConfig.secure,
-        auth: {
-            user: smtpConfig.user,
-            pass: smtpConfig.pass
+    if (smtpConfig.secure) {
+        serverOptions = {
+            host: smtpConfig.host,
+            port: smtpConfig.port,
+            secure: smtpConfig.secure,
+            auth: {
+                user: smtpConfig.user,
+                pass: smtpConfig.pass
+            }
+        }
+    } else {
+        serverOptions = {
+            host: smtpConfig.host,
+            port: smtpConfig.port,
+            secure: smtpConfig.secure
         }
     }
-} else {
-    serverOptions = {
-        host: smtpConfig.host,
-        port: smtpConfig.port,
-        secure: smtpConfig.secure
-    }
-}
 
-var smtpTransport = nodemailer.createTransport(smtpTransport(serverOptions))
+    this.smtpTransport = nodemailer.createTransport(smtpTransportMod(serverOptions))
+}
 
 mailer.prototype.sendDownTimeMail = function(params) {
     var mailMessage = this.getText(params.downServers)
@@ -58,19 +59,12 @@ mailer.prototype.sendDownTimeMail = function(params) {
         return
     }
 
-    smtpTransport.sendMail({
+    this.smtpTransport.sendMail({
         from: config.reporting.email,
         to: config.reporting.receipients,
         subject: "Server Down",
         text: mailMessage
     }, smtpTransportResponse)
-
-    function smtpTransportResponse(error, response) {
-        if (error) {
-            logger.error(error)
-
-        }
-    }
 
 }
 
@@ -101,7 +95,13 @@ mailer.prototype.resetFlag = function() {
 }
 
 mailer.prototype.close = function() {
-    smtpTransport.close()
+    this.smtpTransport.close()
+}
+
+function smtpTransportResponse(error, response) {
+    if (error) {
+        logger.error(error)
+    }
 }
 
 module.exports = mailer
