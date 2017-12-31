@@ -6,8 +6,7 @@ The load is shared evenly amongs all processes and if the worker process dies fo
 
 You can also configure an smtp server with `heinrich`. Mails will be sent whenever one or more of the backend servers go down.
 
-Currently you'll have to clone the project & run the main file. I'll be writing installation & startup scripts for ubuntu & centos servers. Also, we currently support only GET
-& POST methods.
+Currently you'll have to clone the project & run the main file. I'll be writing installation & startup scripts for ubuntu & centos servers.
 
 -------------------------------------------------------
 ### Configuration file :-
@@ -146,6 +145,7 @@ Few metric are being tracked as of now
 - [x] slowloris counter
 - [x] email reporting about downtime
 - [x] bandwidth limiting for upstream & downstream components
+- [x] support for all http methods
 - [x] rate limiting
 - [x] analytics
 - [x] simple dashboard
