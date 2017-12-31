@@ -150,11 +150,9 @@ Few metric are being tracked as of now
 - [x] analytics
 - [x] simple dashboard
 - [x] SSL termination
+- [x] unit test cases
 - [ ] external cache
-- [ ] unit test cases
 - [ ] request queuing
-- [ ] DOS counter
-- [ ] DDOS counter
 
 -------------------------------------------------------
 ### LICENSE
